@@ -907,6 +907,382 @@ body {
   text-align: left;
 }
 
+.credit-screen {
+  padding: 22px 18px 118px;
+  background: radial-gradient(circle at top, #101b3a 0%, #050914 48%, #030712 100%);
+}
+
+.credit-header {
+  display: grid;
+  grid-template-columns: 52px 1fr 52px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.credit-back,
+.credit-help-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(148,163,184,.22);
+  background: rgba(15,23,42,.75);
+  color: white;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.credit-help-btn {
+  font-size: 22px;
+}
+
+.credit-title {
+  font-size: 26px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.credit-subtitle {
+  color: #cbd5e1;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.credit-mode-card,
+.credit-form-card,
+.credit-preview-card {
+  background: linear-gradient(145deg, rgba(18,30,65,.92), rgba(6,13,31,.95));
+  border: 1px solid rgba(96,139,255,.22);
+  border-radius: 24px;
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: 0 16px 36px rgba(0,0,0,.32);
+}
+
+.credit-mode-card.active {
+  border-color: #2563eb;
+  box-shadow: 0 0 22px rgba(37,99,235,.35);
+}
+
+.credit-mode-top {
+  display: grid;
+  grid-template-columns: 56px 1fr 38px;
+  gap: 14px;
+  align-items: center;
+}
+
+.credit-mode-icon,
+.field-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex: 0 0 auto;
+}
+
+.credit-mode-icon.auto,
+.field-icon.blue {
+  background: linear-gradient(145deg, #2563eb, #1e40af);
+}
+
+.credit-mode-icon.advanced,
+.field-icon.purple {
+  background: linear-gradient(145deg, #9333ea, #6b21a8);
+}
+
+.field-icon.green {
+  background: linear-gradient(145deg, #22c55e, #166534);
+}
+
+.field-icon.purple-outline {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(168,85,247,.55);
+  color: #c084fc;
+  background: rgba(168,85,247,.12);
+}
+
+.credit-mode-title {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.credit-mode-title span {
+  color: #3b82f6;
+  font-size: 16px;
+}
+
+.credit-mode-sub {
+  color: #cbd5e1;
+  font-size: 15px;
+  line-height: 1.35;
+  margin-top: 6px;
+}
+
+.credit-selected {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.credit-radio {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid #64748b;
+}
+
+.credit-benefits {
+  margin-top: 18px;
+  padding: 16px 8px;
+  border-radius: 18px;
+  border: 1px solid rgba(148,163,184,.14);
+  background: rgba(15,23,42,.35);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.credit-benefits div {
+  text-align: center;
+  padding: 0 6px;
+  border-right: 1px solid rgba(148,163,184,.18);
+}
+
+.credit-benefits div:last-child {
+  border-right: none;
+}
+
+.benefit-icon {
+  color: #3b82f6;
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.credit-benefits strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.credit-benefits span {
+  display: block;
+  color: #cbd5e1;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.credit-field {
+  margin-bottom: 22px;
+}
+
+.credit-field-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 21px;
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+
+.credit-input,
+.credit-select {
+  width: 100%;
+  height: 58px;
+  border-radius: 16px;
+  border: 1px solid rgba(148,163,184,.22);
+  background: rgba(15,23,42,.72);
+  color: white;
+  font-size: 21px;
+  padding: 0 16px;
+  outline: none;
+}
+
+.credit-select {
+  appearance: auto;
+}
+
+.credit-hint {
+  color: #aeb8d2;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.credit-advanced-toggle {
+  display: grid;
+  grid-template-columns: 42px 1fr 28px;
+  gap: 12px;
+  align-items: center;
+  border-top: 1px solid rgba(148,163,184,.16);
+  padding-top: 18px;
+  cursor: pointer;
+}
+
+.credit-advanced-toggle strong {
+  display: block;
+  font-size: 15px;
+  color: #cbd5e1;
+}
+
+.credit-advanced-toggle small {
+  display: block;
+  color: #aeb8d2;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.chevron {
+  font-size: 30px;
+  color: #94a3b8;
+}
+
+.credit-advanced-fields {
+  margin-top: 16px;
+}
+
+.credit-preview-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.credit-preview-title {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.credit-preview-sub {
+  color: #aeb8d2;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.preview-table {
+  border-radius: 18px;
+  background: rgba(6,78,59,.18);
+  border: 1px solid rgba(34,197,94,.12);
+  overflow: hidden;
+}
+
+.preview-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  padding: 14px;
+  align-items: center;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(148,163,184,.12);
+}
+
+.preview-row:last-child {
+  border-bottom: none;
+}
+
+.preview-header {
+  color: #cbd5e1;
+}
+
+.preview-row strong {
+  font-size: 15px;
+}
+
+.month-pill {
+  justify-self: start;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(34,197,94,.22);
+  color: #63f58d;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.credit-info {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(34,197,94,.5);
+  background: rgba(34,197,94,.08);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: #d1fae5;
+}
+
+.credit-info span {
+  color: #22c55e;
+  font-size: 24px;
+}
+
+.credit-info p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.confirm-credit-btn {
+  width: 100%;
+  height: 64px;
+  border: none;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #2563eb, #1d4ed8);
+  color: white;
+  font-size: 20px;
+  font-weight: 900;
+  box-shadow: 0 0 28px rgba(37,99,235,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.confirm-credit-btn span {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.75);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 390px) {
+  .credit-title {
+    font-size: 22px;
+  }
+
+  .credit-benefits {
+    grid-template-columns: 1fr;
+  }
+
+  .credit-benefits div {
+    border-right: none;
+    border-bottom: 1px solid rgba(148,163,184,.14);
+    padding: 10px 0;
+  }
+
+  .credit-benefits div:last-child {
+    border-bottom: none;
+  }
+
+  .preview-row {
+    grid-template-columns: 1fr 1fr 1fr;
+    font-size: 12px;
+  }
+}
+
 .hidden {
   display: none !important;
 }
@@ -1551,76 +1927,154 @@ body {
     </div>
    </section>
    <!-- Tela de cartão: ajuste de parcelamento e mês de impacto -->
-   <section id="creditScreen" class="screen">
-    <div class="scan-header">
-     <button class="icon-btn" id="backFromCreditBtn" type="button">&lsaquo;</button>
-     <div>
-      <div class="screen-title">Lançar no Cartão</div>
-      <div style="color:#aeb8d2;font-size:14px;margin-top:4px;">Defina como este gasto será registrado</div>
-     </div>
-     <div style="width:58px"></div>
+<section id="creditScreen" class="screen credit-screen">
+  <div class="credit-header">
+    <button class="credit-back" id="backFromCreditBtn" type="button">‹</button>
+
+    <div>
+      <div class="credit-title">Lançar no Cartão</div>
+      <div class="credit-subtitle">Defina como este gasto será registrado</div>
     </div>
 
-    <div class="glass-card" id="autoModeCard" style="padding:18px;margin-bottom:14px;border-color:rgba(59,130,246,.9);">
-     <div style="display:flex;gap:14px;align-items:flex-start;">
-      <div class="blue" style="width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex:0 0 auto;">⚡</div>
-      <div style="flex:1;">
-       <div style="font-size:20px;font-weight:900;margin-bottom:6px;">Automático <span style="font-size:14px;color:#3b82f6;">(recomendado)</span></div>
-       <div style="color:#cbd5e1;font-size:15px;line-height:1.35;">Usa estimativa para definir o mês da fatura.</div>
+    <button class="credit-help-btn" type="button">?</button>
+  </div>
+
+  <div class="credit-mode-card active" id="autoModeCard">
+    <div class="credit-mode-top">
+      <div class="credit-mode-icon auto">⚡</div>
+
+      <div class="credit-mode-text">
+        <div class="credit-mode-title">
+          Automático <span>(recomendado)</span>
+        </div>
+        <div class="credit-mode-sub">
+          Usa estimativa da fatura para definir em qual mês o gasto entrará.
+        </div>
       </div>
-      <div style="width:32px;height:32px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;font-weight:900;">✓</div>
-     </div>
+
+      <div class="credit-selected">✓</div>
     </div>
 
-    <div class="glass-card" id="advancedModeCard" style="padding:18px;margin-bottom:14px;">
-     <div style="display:flex;gap:14px;align-items:flex-start;">
-      <div class="purple" style="width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex:0 0 auto;">⚙️</div>
-      <div style="flex:1;">
-       <div style="font-size:20px;font-weight:900;margin-bottom:6px;">Avançado</div>
-       <div style="color:#cbd5e1;font-size:15px;line-height:1.35;">Defina manualmente o fechamento da fatura e o parcelamento.</div>
+    <div class="credit-benefits">
+      <div>
+        <div class="benefit-icon">↺</div>
+        <strong>Rápido e simples</strong>
+        <span>Lançamento em segundos</span>
       </div>
-     </div>
+
+      <div>
+        <div class="benefit-icon">◎</div>
+        <strong>Estimativa inteligente</strong>
+        <span>Baseado no fechamento padrão</span>
+      </div>
+
+      <div>
+        <div class="benefit-icon">▣</div>
+        <strong>Ideal para o dia a dia</strong>
+        <span>Perfeito para a maioria</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="credit-mode-card" id="advancedModeCard">
+    <div class="credit-mode-top">
+      <div class="credit-mode-icon advanced">⚙️</div>
+
+      <div class="credit-mode-text">
+        <div class="credit-mode-title">Avançado</div>
+        <div class="credit-mode-sub">
+          Você define o fechamento da fatura atual e tem controle total do parcelamento.
+        </div>
+      </div>
+
+      <div class="credit-radio"></div>
+    </div>
+  </div>
+
+  <div class="credit-form-card">
+    <div class="credit-field">
+      <div class="credit-field-title">
+        <span class="field-icon blue">💳</span>
+        Valor do gasto
+      </div>
+
+      <input id="ccValor" class="credit-input" type="text" value="R$ 1.250,00" readonly>
     </div>
 
-    <div class="glass-card" style="padding:18px;margin-bottom:14px;">
-     <div style="font-size:17px;font-weight:800;margin-bottom:10px;">💳 Valor do gasto</div>
-     <input id="ccValor" type="text" value="R$ 0,00" readonly style="width:100%;height:54px;border-radius:14px;border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.9);color:white;font-size:20px;padding:0 14px;">
+    <div class="credit-field">
+      <div class="credit-field-title">
+        <span class="field-icon purple">1₂</span>
+        Parcelamento
+      </div>
 
-     <div style="font-size:17px;font-weight:800;margin-top:18px;margin-bottom:10px;">⑫ Parcelamento</div>
-     <select id="ccParcelas" style="width:100%;height:54px;border-radius:14px;border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.9);color:white;font-size:17px;padding:0 14px;">
-      <option value="1">1 parcela (à vista)</option>
-      <option value="2">2 parcelas</option>
-      <option value="3">3 parcelas</option>
-      <option value="4">4 parcelas</option>
-      <option value="5">5 parcelas</option>
-      <option value="6">6 parcelas</option>
-      <option value="7">7 parcelas</option>
-      <option value="8">8 parcelas</option>
-      <option value="9">9 parcelas</option>
-      <option value="10">10 parcelas</option>
-      <option value="11">11 parcelas</option>
-      <option value="12">12 parcelas</option>
-     </select>
+      <select id="ccParcelas" class="credit-select">
+        <option value="1">1 parcela (à vista)</option>
+        <option value="2">2 parcelas</option>
+        <option value="3">3 parcelas</option>
+        <option value="4">4 parcelas</option>
+        <option value="5">5 parcelas</option>
+        <option value="6">6 parcelas</option>
+        <option value="7">7 parcelas</option>
+        <option value="8">8 parcelas</option>
+        <option value="9">9 parcelas</option>
+        <option value="10">10 parcelas</option>
+        <option value="11">11 parcelas</option>
+        <option value="12">12 parcelas</option>
+      </select>
 
-     <div id="advancedArea" class="hidden" style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(148,163,184,.16);">
-      <div style="font-size:17px;font-weight:800;margin-bottom:10px;">📅 Dia de fechamento da fatura atual</div>
-      <input id="ccFechamento" type="number" min="1" max="31" value="10" style="width:100%;height:54px;border-radius:14px;border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.9);color:white;font-size:20px;padding:0 14px;">
-     </div>
+      <div class="credit-hint">Selecione em quantas parcelas foi pago.</div>
     </div>
 
-    <div class="glass-card" style="padding:18px;margin-bottom:14px;">
-     <div style="font-size:20px;font-weight:900;margin-bottom:4px;">Preview das parcelas</div>
-     <div style="color:#aeb8d2;font-size:14px;margin-bottom:14px;">Veja em quais meses este gasto entrará</div>
-     <div id="previewParcelas" style="background:rgba(15,23,42,.66);border:1px solid rgba(148,163,184,.16);border-radius:18px;overflow:hidden;"></div>
-     <div id="creditInfo" style="padding:14px;border-radius:18px;border:1px solid rgba(34,197,94,.55);background:rgba(34,197,94,.1);color:#d1fae5;font-size:14px;line-height:1.35;margin-top:16px;">
-      No modo automático, o gasto entra no mês da compra. Para controlar fechamento e fatura, use o modo avançado.
-     </div>
+    <div class="credit-advanced-toggle" id="creditAdvancedToggle">
+      <span class="field-icon purple-outline">⚙️</span>
+      <div>
+        <strong>Opções avançadas (fechamento da fatura)</strong>
+        <small>Defina manualmente o fechamento da fatura atual</small>
+      </div>
+      <span class="chevron">⌄</span>
     </div>
 
-    <button id="confirmCreditBtn" type="button" style="width:100%;height:60px;border:none;border-radius:16px;background:linear-gradient(145deg,#2563eb,#1d4ed8);color:white;font-size:18px;font-weight:900;margin-bottom:20px;">
-     ✓ Confirmar lançamento
-    </button>
-   </section>
+    <div class="credit-advanced-fields hidden" id="advancedArea">
+      <div class="credit-field">
+        <div class="credit-field-title">Dia de fechamento</div>
+        <input id="ccFechamento" class="credit-input" type="number" min="1" max="31" value="10">
+      </div>
+    </div>
+  </div>
+
+  <div class="credit-preview-card">
+    <div class="credit-preview-head">
+      <span class="field-icon green">👁</span>
+      <div>
+        <div class="credit-preview-title">Preview das parcelas</div>
+        <div class="credit-preview-sub">Veja em quais meses este gasto entrará</div>
+      </div>
+    </div>
+
+    <div class="preview-table" id="previewParcelas">
+      <div class="preview-row preview-header">
+        <span>Parcela</span>
+        <span>Valor</span>
+        <span>Mês</span>
+      </div>
+      <div class="preview-row">
+        <strong>1 de 1</strong>
+        <strong>R$ 1.250,00</strong>
+        <span class="month-pill">MAI/2025</span>
+      </div>
+    </div>
+
+    <div class="credit-info" id="creditInfo">
+      <span>ⓘ</span>
+      <p>No modo automático, a data é estimada com base no fechamento padrão do seu cartão. Para definir manualmente, use o modo avançado.</p>
+    </div>
+  </div>
+
+  <button class="confirm-credit-btn" id="confirmCreditBtn" type="button">
+    <span>✓</span>
+    Confirmar lançamento
+  </button>
+</section>
    <input id="qrResult" type="hidden"/>
    <button disabled="" id="sendBtn">
     Registrar Gasto
@@ -1658,7 +2112,7 @@ body {
     Conta
    </div>
   </nav>
-  <script src="app.js?v=1008">
+  <script src="app.js?v=1009">
   </script>
  </body>
 </html>
