@@ -105,10 +105,9 @@ function calcularTotal() {
 }
 
 function showScreen(screen) {
-  homeScreen.classList.remove("active");
-  scanScreen.classList.remove("active");
-  processingScreen.classList.remove("active");
-  creditScreen.classList.remove("active");
+  document.querySelectorAll(".screen").forEach(s => {
+    s.classList.remove("active");
+  });
 
   screen.classList.add("active");
 }
