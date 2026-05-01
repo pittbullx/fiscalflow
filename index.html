@@ -1541,59 +1541,78 @@ body {
       </span>
      </div>
     </div>
-    <section id="creditScreen" class="screen">
-<section id="creditScreen" class="screen">
-  <div class="scan-header">
-    <button class="icon-btn" id="backFromCreditBtn">‹</button>
-    <div class="screen-title">Lançar no Cartão</div>
-    <div style="width:58px"></div>
-  </div>
-
-  <div class="glass-card" style="padding:18px;margin-bottom:14px;">
-    <div style="font-size:20px;font-weight:800;margin-bottom:10px;">
-      Automático (recomendado)
+   </section>
+   <!-- Tela de cartão: ajuste de parcelamento e mês de impacto -->
+   <section id="creditScreen" class="screen">
+    <div class="scan-header">
+     <button class="icon-btn" id="backFromCreditBtn" type="button">&lsaquo;</button>
+     <div>
+      <div class="screen-title">Lançar no Cartão</div>
+      <div style="color:#aeb8d2;font-size:14px;margin-top:4px;">Defina como este gasto será registrado</div>
+     </div>
+     <div style="width:58px"></div>
     </div>
-    <div style="color:#cbd5e1;">
-      Usa estimativa para definir o mês da fatura
-    </div>
-  </div>
 
-  <div class="glass-card" style="padding:18px;margin-bottom:14px;">
-    <div style="font-size:20px;font-weight:800;margin-bottom:10px;">
-      Avançado
+    <div class="glass-card" id="autoModeCard" style="padding:18px;margin-bottom:14px;border-color:rgba(59,130,246,.9);">
+     <div style="display:flex;gap:14px;align-items:flex-start;">
+      <div class="blue" style="width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex:0 0 auto;">⚡</div>
+      <div style="flex:1;">
+       <div style="font-size:20px;font-weight:900;margin-bottom:6px;">Automático <span style="font-size:14px;color:#3b82f6;">(recomendado)</span></div>
+       <div style="color:#cbd5e1;font-size:15px;line-height:1.35;">Usa estimativa para definir o mês da fatura.</div>
+      </div>
+      <div style="width:32px;height:32px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;font-weight:900;">✓</div>
+     </div>
     </div>
-    <div style="color:#cbd5e1;">
-      Defina manualmente o fechamento da fatura
+
+    <div class="glass-card" id="advancedModeCard" style="padding:18px;margin-bottom:14px;">
+     <div style="display:flex;gap:14px;align-items:flex-start;">
+      <div class="purple" style="width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex:0 0 auto;">⚙️</div>
+      <div style="flex:1;">
+       <div style="font-size:20px;font-weight:900;margin-bottom:6px;">Avançado</div>
+       <div style="color:#cbd5e1;font-size:15px;line-height:1.35;">Defina manualmente o fechamento da fatura e o parcelamento.</div>
+      </div>
+     </div>
     </div>
-  </div>
 
-  <div class="glass-card" style="padding:18px;margin-bottom:14px;">
-    <div style="margin-bottom:10px;">Valor</div>
-    <input id="ccValor" type="text" style="width:100%;height:50px;border-radius:12px;">
-    
-    <div style="margin-top:16px;margin-bottom:10px;">Parcelas</div>
-    <select id="ccParcelas" style="width:100%;height:50px;border-radius:12px;">
-      <option value="1">1x</option>
-      <option value="2">2x</option>
-      <option value="3">3x</option>
-      <option value="4">4x</option>
-      <option value="5">5x</option>
-      <option value="6">6x</option>
-    </select>
-  </div>
+    <div class="glass-card" style="padding:18px;margin-bottom:14px;">
+     <div style="font-size:17px;font-weight:800;margin-bottom:10px;">💳 Valor do gasto</div>
+     <input id="ccValor" type="text" value="R$ 0,00" readonly style="width:100%;height:54px;border-radius:14px;border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.9);color:white;font-size:20px;padding:0 14px;">
 
-  <div class="glass-card" style="padding:18px;margin-bottom:14px;">
-    <div style="font-size:18px;font-weight:800;margin-bottom:10px;">
-      Preview
+     <div style="font-size:17px;font-weight:800;margin-top:18px;margin-bottom:10px;">⑫ Parcelamento</div>
+     <select id="ccParcelas" style="width:100%;height:54px;border-radius:14px;border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.9);color:white;font-size:17px;padding:0 14px;">
+      <option value="1">1 parcela (à vista)</option>
+      <option value="2">2 parcelas</option>
+      <option value="3">3 parcelas</option>
+      <option value="4">4 parcelas</option>
+      <option value="5">5 parcelas</option>
+      <option value="6">6 parcelas</option>
+      <option value="7">7 parcelas</option>
+      <option value="8">8 parcelas</option>
+      <option value="9">9 parcelas</option>
+      <option value="10">10 parcelas</option>
+      <option value="11">11 parcelas</option>
+      <option value="12">12 parcelas</option>
+     </select>
+
+     <div id="advancedArea" class="hidden" style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(148,163,184,.16);">
+      <div style="font-size:17px;font-weight:800;margin-bottom:10px;">📅 Dia de fechamento da fatura atual</div>
+      <input id="ccFechamento" type="number" min="1" max="31" value="10" style="width:100%;height:54px;border-radius:14px;border:1px solid rgba(148,163,184,.25);background:rgba(15,23,42,.9);color:white;font-size:20px;padding:0 14px;">
+     </div>
     </div>
-    <div id="previewParcelas"></div>
-  </div>
 
-  <button style="width:100%;height:60px;border-radius:16px;background:#2563eb;color:white;font-weight:800;">
-    Confirmar
-  </button>
-</section>
-    </section>
+    <div class="glass-card" style="padding:18px;margin-bottom:14px;">
+     <div style="font-size:20px;font-weight:900;margin-bottom:4px;">Preview das parcelas</div>
+     <div style="color:#aeb8d2;font-size:14px;margin-bottom:14px;">Veja em quais meses este gasto entrará</div>
+     <div id="previewParcelas" style="background:rgba(15,23,42,.66);border:1px solid rgba(148,163,184,.16);border-radius:18px;overflow:hidden;"></div>
+     <div id="creditInfo" style="padding:14px;border-radius:18px;border:1px solid rgba(34,197,94,.55);background:rgba(34,197,94,.1);color:#d1fae5;font-size:14px;line-height:1.35;margin-top:16px;">
+      No modo automático, o gasto entra no mês da compra. Para controlar fechamento e fatura, use o modo avançado.
+     </div>
+    </div>
+
+    <button id="confirmCreditBtn" type="button" style="width:100%;height:60px;border:none;border-radius:16px;background:linear-gradient(145deg,#2563eb,#1d4ed8);color:white;font-size:18px;font-weight:900;margin-bottom:20px;">
+     ✓ Confirmar lançamento
+    </button>
+   </section>
    <input id="qrResult" type="hidden"/>
    <button disabled="" id="sendBtn">
     Registrar Gasto
@@ -1631,7 +1650,7 @@ body {
     Conta
    </div>
   </nav>
-  <script src="app.js?v=1006">
+  <script src="app.js?v=1007">
   </script>
  </body>
 </html>
