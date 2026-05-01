@@ -15,6 +15,7 @@ let itensManuais = [];
 const homeScreen = document.getElementById("homeScreen");
 const scanScreen = document.getElementById("scanScreen");
 const processingScreen = document.getElementById("processingScreen");
+const creditScreen = document.getElementById("creditScreen");
 
 // Buttons
 const openScanCard = document.getElementById("openScanCard");
@@ -107,6 +108,7 @@ function showScreen(screen) {
   homeScreen.classList.remove("active");
   scanScreen.classList.remove("active");
   processingScreen.classList.remove("active");
+  creditScreen.classList.remove("active");
 
   screen.classList.add("active");
 }
