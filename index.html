@@ -108,6 +108,12 @@ body {
 
 .screen {
   display: none;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 10;
 }
 
 .screen.active {
@@ -506,7 +512,9 @@ body {
   box-shadow: 0 -10px 35px rgba(0,0,0,.35);
   z-index: 50;
 }
-
+.screen {
+  z-index: 100;
+}
 .nav-item {
   color: #aeb8d2;
   font-size: 13px;
@@ -1650,7 +1658,7 @@ body {
     Conta
    </div>
   </nav>
-  <script src="app.js?v=1007">
+  <script src="app.js?v=1008">
   </script>
  </body>
 </html>
