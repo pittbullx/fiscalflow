@@ -888,6 +888,6 @@ function atualizarEtapaProcessamento(etapa) {
 }
 
 
-setTimeout(() => {
+if (window.location.search.includes("debug=cartao")) {
   showScreen(creditScreen);
-}, 1000);
+}
