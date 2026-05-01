@@ -886,3 +886,8 @@ function atualizarEtapaProcessamento(etapa) {
     steps[etapa].classList.add("active");
   }
 }
+
+
+setTimeout(() => {
+  showScreen(creditScreen);
+}, 1000);
