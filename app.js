@@ -613,11 +613,21 @@ function renderizarGraficoBarras(dados) {
   const meses = dados.ultimos_6_meses || mesesGrafico || [];
   const maior = Math.max(...meses.map(m => Number(m.total || 0)), 1);
 
-  chart.innerHTML = "";
+  const escalaMax = Math.ceil(maior / 1000) * 1000;
+
+  chart.innerHTML = `
+    <div class="y-axis-labels">
+      <span>${escalaMax}</span>
+      <span>${Math.round(escalaMax * 0.75)}</span>
+      <span>${Math.round(escalaMax * 0.5)}</span>
+      <span>${Math.round(escalaMax * 0.25)}</span>
+      <span>0</span>
+    </div>
+  `;
 
   meses.forEach(m => {
     const total = Number(m.total || 0);
-    const altura = Math.max((total / maior) * 100, 6);
+    const altura = total > 0 ? Math.max((total / maior) * 100, 6) : 5;
     const ativo = m.mes === dados.mes_selecionado;
 
     const item = document.createElement("div");

@@ -1200,30 +1200,33 @@
 
   .bar-chart {
     position: relative;
-    height: 230px;
-    padding: 24px 0 24px 34px;
+    height: 210px;
+    padding: 28px 0 24px 34px;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 5px;
+    gap: 4px;
+
     background-image:
-      linear-gradient(to top, rgba(148,163,184,.18) 1px, transparent 1px);
-    background-size: 100% 20%;
-    background-position: left 24px;
+      linear-gradient(to top, rgba(148,163,184,.16) 1px, transparent 1px);
+    background-size: 100% 25%;
+    background-position: left bottom;
   }
 
   .bar-chart::before {
-    content: "500\A 400\A 300\A 200\A 100\A 0";
-    white-space: pre;
+    content: "";
+  }
+
+  .y-axis-labels {
     position: absolute;
     left: 0;
-    top: 16px;
-    bottom: 18px;
+    top: 26px;
+    bottom: 44px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     color: #cbd5e1;
-    font-size: 11px;
+    font-size: 10px;
     line-height: 1;
   }
 
@@ -1231,20 +1234,22 @@
     position: relative;
     flex: 1;
     height: 100%;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
   }
 
   .bar-value {
     position: absolute;
-    bottom: calc(var(--bar-height) + 26px);
-    font-size: 10px;
+    bottom: calc(var(--bar-height) + 30px);
+    font-size: 8px;
     font-weight: 800;
     color: #ffffff;
     white-space: nowrap;
+    transform: rotate(-25deg);
   }
 
   .bar-item.active .bar-value {
@@ -1254,7 +1259,7 @@
   .bar {
     width: 100%;
     max-width: 22px;
-    min-height: 8px;
+    min-height: 7px;
     border-radius: 6px 6px 2px 2px;
     background: linear-gradient(180deg, rgba(148,163,184,.62), rgba(71,85,105,.72));
   }
@@ -1265,8 +1270,9 @@
   }
 
   .bar-label {
-    font-size: 11px;
+    font-size: 10px;
     color: #e5e7eb;
+    white-space: nowrap;
   }
 
 
@@ -1633,6 +1639,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=1012"></script>
+  <script src="app.js?v=1013"></script>
 </body>
 </html>
