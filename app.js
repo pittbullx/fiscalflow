@@ -710,21 +710,6 @@ function renderizarDonutLegenda(top3, total) {
   });
 }
 
-document.getElementById("btnBarChart")?.addEventListener("click", () => {
-  modoGrafico = "bar";
-  document.getElementById("barChart").classList.remove("hidden");
-  document.getElementById("donutView").classList.add("hidden");
-  document.getElementById("btnBarChart").classList.add("active");
-  document.getElementById("btnDonutChart").classList.remove("active");
-});
-
-document.getElementById("btnDonutChart")?.addEventListener("click", () => {
-  modoGrafico = "donut";
-  document.getElementById("barChart").classList.add("hidden");
-  document.getElementById("donutView").classList.remove("hidden");
-  document.getElementById("btnDonutChart").classList.add("active");
-  document.getElementById("btnBarChart").classList.remove("active");
-});
 
   async function carregarUltimasNotas() {
     try {

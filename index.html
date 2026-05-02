@@ -1333,6 +1333,29 @@
     white-space: nowrap;
   }
 
+  .bar-chart {
+    height: 170px;
+    padding: 18px 0 0 34px;
+    background-position: left 18px;
+  }
+
+  .y-axis-labels {
+    top: 18px;
+    bottom: 14px;
+  }
+
+  .bar-item {
+    height: calc(100% - 14px);
+    gap: 6px;
+  }
+
+  .bar-label {
+    height: 14px;
+    line-height: 14px;
+  }
+
+
+
 
   </style>
 </head>
@@ -1373,24 +1396,10 @@
       <div class="glass-card expenses-card">
         <div class="expenses-top">
           <div class="expenses-title">Despesas por mês</div>
-
-          <div class="expenses-actions">
-            <button class="chart-toggle active" id="btnBarChart" type="button" aria-label="Gráfico de barras">
-              <img src="Icone-grafico-de-barras.png" class="chart-icon" alt="">
-            </button>
-
-            <button class="chart-toggle" id="btnDonutChart" type="button" aria-label="Gráfico de rosca">
-              <img src="Icone-grafico-de-rosca.png" class="chart-icon" alt="">
-            </button>
-          </div>
         </div>
 
         <div id="barChart" class="bar-chart"></div>
 
-        <div id="donutView" class="donut-view hidden">
-          <div class="donut big-donut"></div>
-          <div id="donutLegend" class="donut-legend"></div>
-        </div>
       </div>
 
       <div class="glass-card categories-card">
@@ -1690,6 +1699,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=1025"></script>
+  <script src="app.js?v=1030"></script>
 </body>
 </html>
