@@ -664,10 +664,10 @@ function renderizarInsightsMensais() {
     mesesComGasto.reduce((soma, m) => soma + Number(m.total || 0), 0) /
     mesesComGasto.length;
 
-  document.getElementById("maiorDespesaMes").innerText = maior.label;
+  document.getElementById("maiorDespesaMes").innerText = nomeMesCompleto(maior.mes);
   document.getElementById("maiorDespesaValor").innerText = moedaBR(maior.total);
 
-  document.getElementById("menorDespesaMes").innerText = menor.label;
+  document.getElementById("menorDespesaMes").innerText = nomeMesCompleto(menor.mes);
   document.getElementById("menorDespesaValor").innerText = moedaBR(menor.total);
 
   document.getElementById("mediaMensalValor").innerText = moedaBR(media);
