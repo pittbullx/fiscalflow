@@ -1155,6 +1155,7 @@
 
   .dashboard-total-area {
     margin-bottom: 22px;
+    text-align: center; /* 🔥 centraliza tudo */
   }
 
   .dashboard-total-label {
@@ -1166,18 +1167,18 @@
 
   .dashboard-total-value {
     font-size: 34px;
-    font-weight: 950;
+    font-weight: 800;
     letter-spacing: -1.5px;
     line-height: 1;
+    text-align: center;
   }
 
-  .dashboard-compare span {
-    padding: 5px 10px;
-    border-radius: 999px;
-    background: rgba(16,185,129,.18);
-    color: #34d399;
-    font-weight: 800;
-    font-size: 13px;   /* antes maior */
+  .dashboard-compare {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center; /* 🔥 centraliza horizontal */
+    align-items: center;
+    gap: 8px;
   }
 
   .dashboard-compare span {
@@ -1632,6 +1633,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=1011"></script>
+  <script src="app.js?v=1012"></script>
 </body>
 </html>
