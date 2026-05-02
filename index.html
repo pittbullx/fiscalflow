@@ -1198,7 +1198,7 @@
   position: absolute;
   left: 34px;
   right: 0;
-  top: 18px;
+  top: 10px;
   bottom: 26px;
 
   background-image:
@@ -1207,12 +1207,7 @@
     linear-gradient(to right, rgba(148,163,184,.25) 50%, transparent 50%),
     linear-gradient(to right, rgba(148,163,184,.25) 50%, transparent 50%);
 
-  background-size:
-    10px 1px,
-    10px 1px,
-    10px 1px,
-    10px 1px;
-
+  background-size: 10px 1px;
   background-repeat: repeat-x;
 
   background-position:
@@ -1230,7 +1225,7 @@
   position: absolute;
   left: 34px;
   right: 0;
-  bottom: 26px; /* 🔥 CRÍTICO: MESMO VALOR DO PADDING */
+  bottom: 26px;
   height: 1px;
   background: rgba(148,163,184,.7);
 }
@@ -1239,14 +1234,25 @@
 .y-axis-labels {
   position: absolute;
   left: 0;
-  top: 18px;
+  top: 10px;
   bottom: 26px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  width: 30px;
   font-size: 10px;
   color: #cbd5e1;
+  pointer-events: none;
 }
+
+.y-axis-labels span {
+  position: absolute;
+  right: 4px;
+  transform: translateY(-50%);
+}
+
+.y-axis-labels span:nth-child(1) { top: 0%; }
+.y-axis-labels span:nth-child(2) { top: 25%; }
+.y-axis-labels span:nth-child(3) { top: 50%; }
+.y-axis-labels span:nth-child(4) { top: 75%; }
+.y-axis-labels span:nth-child(5) { top: 100%; }
 
 /* barras */
 .bar-item {
@@ -1619,6 +1625,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=3051"></script>
+  <script src="app.js?v=3052"></script>
 </body>
 </html>
