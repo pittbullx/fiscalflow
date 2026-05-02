@@ -513,7 +513,7 @@ function aplicarDashboardPorMes(mes) {
   montarSeletorPeriodo();
   renderizarGraficoBarras(dados);
   renderizarCategoriasTop3(dados);
-  atualizarMetas(dados.total_mes || 0);
+  
 }
 function formatarLabelMes(mes) {
   const nomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
@@ -538,16 +538,7 @@ function aplicarDashboard(dados) {
   renderizarCategoriasTop3(dados);
   precarregarMesesDashboard();
 }
-function atualizarMetas(gastoAtual) {
-  const meta = 1520; // depois podemos puxar do banco
 
-  const percentual = meta > 0 ? Math.min((gastoAtual / meta) * 100, 100) : 0;
-
-  document.getElementById("metaGasto").innerText = moedaBR(gastoAtual);
-  document.getElementById("metaValor").innerText = moedaBR(meta);
-  document.getElementById("metaPercent").innerText = Math.round(percentual) + "%";
-  document.getElementById("metaBar").style.width = percentual + "%";
-}
 async function precarregarMesesDashboard() {
   const meses = mesesFixosGrafico || [];
 
