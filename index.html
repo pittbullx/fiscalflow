@@ -404,56 +404,72 @@
       font-size: 28px;
     }
 
-    .bottom-nav {
-      position: fixed;
-      left: 50%;
-      bottom: 0;
-      transform: translateX(-50%);
-      width: min(430px, 100%);
-      height: 86px;
-      padding: 10px 18px 12px;
-      display: grid;
-      grid-template-columns: 1fr 1fr 86px 1fr 1fr;
-      align-items: center;
-      background: rgba(3, 7, 18, .86);
-      backdrop-filter: blur(20px);
-      border-top-left-radius: 28px;
-      border-top-right-radius: 28px;
-      border: 1px solid rgba(96,139,255,.14);
-      box-shadow: 0 -10px 35px rgba(0,0,0,.35);
-      z-index: 50;
-    }
+  .bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: min(430px, 100%);
+  height: 76px;
+  padding: 8px 18px 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 70px 1fr 1fr;
+  align-items: center;
+  background: rgba(3, 7, 18, .94);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(96,139,255,.18);
+  border-radius: 0;
+  box-shadow: 0 -8px 28px rgba(0,0,0,.35);
+  z-index: 50;
+}
 
-    .nav-item {
-      color: #aeb8d2;
-      font-size: 13px;
-      text-align: center;
-    }
+.nav-item {
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+}
 
-    .nav-item span {
-      display: block;
-      font-size: 26px;
-      margin-bottom: 4px;
-    }
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  margin: 0 auto 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .nav-item.active {
-      color: #3b82f6;
-    }
+.nav-icon svg {
+  width: 21px;
+  height: 21px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
-    .nav-scan {
-      width: 78px;
-      height: 78px;
-      border-radius: 50%;
-      background: linear-gradient(145deg, #3b82f6, #1d4ed8);
-      border: 4px solid rgba(255,255,255,.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 36px;
-      margin: -34px auto 0;
-      box-shadow: 0 0 34px rgba(59,130,246,.65);
-      cursor: pointer;
-    }
+.nav-item.active {
+  color: #2584ff;
+}
+
+.nav-scan {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #3b82f6, #0b7cff);
+  border: 3px solid rgba(255,255,255,.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 300;
+  color: #ffffff;
+  margin: -24px auto 0;
+  box-shadow: 0 0 28px rgba(37,132,255,.65);
+  cursor: pointer;
+}
 
     .scan-header {
       display: flex;
@@ -2118,30 +2134,55 @@
 
   </div>
 
-  <nav class="bottom-nav">
-    <div class="nav-item active" onclick="showScreen(homeScreen); stopCamera();">
-      <span>⌂</span>
-      Início
-    </div>
+<nav class="bottom-nav">
+  <div class="nav-item active" onclick="showScreen(homeScreen); stopCamera();">
+    <span class="nav-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 11l8-7 8 7" />
+        <path d="M6 10v10h12V10" />
+        <path d="M10 20v-6h4v6" />
+      </svg>
+    </span>
+    Início
+  </div>
 
-    <div class="nav-item" onclick="window.location.href='historico.html'">
-      <span>▤</span>
-      Histórico
-    </div>
+  <div class="nav-item">
+    <span class="nav-icon">
+      <svg viewBox="0 0 24 24">
+        <rect x="4" y="6" width="16" height="12" rx="2" />
+        <path d="M4 10h16" />
+        <path d="M16 14h2" />
+      </svg>
+    </span>
+    Carteira
+  </div>
 
-    <div class="nav-scan" id="bottomScanBtn">⌗</div>
+  <div class="nav-scan" id="bottomScanBtn">+</div>
 
-    <div class="nav-item">
-      <span>◔</span>
-      Relatórios
-    </div>
+  <div class="nav-item" onclick="window.location.href='historico.html'">
+    <span class="nav-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M5 20V10" />
+        <path d="M12 20V4" />
+        <path d="M19 20v-7" />
+        <path d="M4 20h16" />
+      </svg>
+    </span>
+    Despesas
+  </div>
 
-    <div class="nav-item">
-      <span>♙</span>
-      Conta
-    </div>
-  </nav>
+  <div class="nav-item">
+    <span class="nav-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="6" cy="12" r="1.5" />
+        <circle cx="12" cy="12" r="1.5" />
+        <circle cx="18" cy="12" r="1.5" />
+      </svg>
+    </span>
+    Mais
+  </div>
+</nav>
 
-  <script src="app.js?v=3230"></script>
+  <script src="app.js?v=3235"></script>
 </body>
 </html>
