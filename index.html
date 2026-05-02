@@ -1378,6 +1378,200 @@
   font-size: 20px;
 }
 
+.top-categories-card {
+  padding: 18px 16px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+
+.top-categories-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.top-categories-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.top-categories-sub {
+  margin-top: 4px;
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.top-categories-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 10px;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.top-categories-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dot-blue,
+.dot-gray {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-blue {
+  background: #2596ff;
+}
+
+.dot-gray {
+  background: #64748b;
+}
+
+.top-categories-columns {
+  display: grid;
+  grid-template-columns: 1fr 72px 72px;
+  gap: 8px;
+  padding: 0 0 8px;
+  border-bottom: 1px solid rgba(148,163,184,.14);
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+.top-categories-columns span:nth-child(2),
+.top-categories-columns span:nth-child(3) {
+  text-align: right;
+}
+
+.top-category-row {
+  display: grid;
+  grid-template-columns: 24px 30px 1fr 72px 72px;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(148,163,184,.10);
+}
+
+.top-category-row:last-child {
+  border-bottom: none;
+}
+
+.top-category-rank {
+  font-size: 12px;
+  color: #e5e7eb;
+  font-weight: 800;
+  text-align: center;
+}
+
+.top-category-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  border: 1px solid rgba(56,189,248,.45);
+  background: rgba(37,150,255,.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+}
+
+.top-category-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.top-category-main {
+  min-width: 0;
+}
+
+.top-category-name {
+  font-size: 12px;
+  font-weight: 850;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 7px;
+}
+
+.top-category-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.top-category-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(100,116,139,.25);
+  overflow: hidden;
+}
+
+.top-category-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.top-category-fill.current {
+  background: linear-gradient(90deg, #0b7cff, #38bdf8);
+}
+
+.top-category-fill.average {
+  background: rgba(148,163,184,.75);
+}
+
+.top-category-value {
+  font-size: 11px;
+  font-weight: 900;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.top-category-value.current {
+  color: #38bdf8;
+}
+
+.top-category-value.average {
+  color: #aeb8d2;
+}
+
+@media (max-width: 390px) {
+  .top-categories-card {
+    padding: 16px 12px;
+  }
+
+  .top-category-row {
+    grid-template-columns: 18px 28px 1fr 64px;
+  }
+
+  .top-categories-columns {
+    grid-template-columns: 1fr 64px;
+  }
+
+  .top-categories-columns span:nth-child(3),
+  .top-category-value.average {
+    display: none;
+  }
+
+  .top-categories-legend {
+    display: none;
+  }
+}
+
+
 
   </style>
 </head>
@@ -1460,29 +1654,29 @@
   </div>
 </div>
 
-      <div class="glass-card categories-card">
-        <div class="categories-title">Top 3 Categorias</div>
-        <div class="cat">
-          <div class="cat-icon blue">🍴</div>
-          <div class="cat-name">Alimentação</div>
-          <div class="cat-value">R$ 0,00</div>
-          <div class="cat-percent" style="color:#3b82f6;">0%</div>
-        </div>
 
-        <div class="cat">
-          <div class="cat-icon purple">🚗</div>
-          <div class="cat-name">Transporte</div>
-          <div class="cat-value">R$ 0,00</div>
-          <div class="cat-percent" style="color:#c084fc;">0%</div>
-        </div>
 
-        <div class="cat">
-          <div class="cat-icon orange">🛍️</div>
-          <div class="cat-name">Compras</div>
-          <div class="cat-value">R$ 0,00</div>
-          <div class="cat-percent" style="color:#fb923c;">0%</div>
-        </div>
-      </div>
+<div class="glass-card top-categories-card">
+  <div class="top-categories-header">
+    <div>
+      <div class="top-categories-title">Top 10 categorias</div>
+      <div class="top-categories-sub">Mês selecionado vs. média dos outros meses</div>
+    </div>
+
+    <div class="top-categories-legend">
+      <span><i class="dot-blue"></i>Mês</span>
+      <span><i class="dot-gray"></i>Média</span>
+    </div>
+  </div>
+
+  <div class="top-categories-columns">
+    <span>Categoria</span>
+    <span>Mês</span>
+    <span>Média</span>
+  </div>
+
+  <div id="topCategoriasList" class="top-categories-list"></div>
+</div>
 
 
 
@@ -1757,6 +1951,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=3065"></script>
+  <script src="app.js?v=3066"></script>
 </body>
 </html>

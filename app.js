@@ -512,7 +512,7 @@ function aplicarDashboardPorMes(mes) {
 
   montarSeletorPeriodo();
   renderizarGraficoBarras(dados);
-  renderizarCategoriasTop3(dados);
+  renderizarTopCategorias(dados);
   renderizarInsightsMensais();
   
 }
@@ -536,7 +536,7 @@ function aplicarDashboard(dados) {
 
   montarSeletorPeriodo(mesesFixosGrafico);
   renderizarGraficoBarras(dados);
-  renderizarCategoriasTop3(dados);
+  renderizarTopCategorias(dados);
   precarregarMesesDashboard();
 }
 
@@ -673,52 +673,206 @@ function renderizarInsightsMensais() {
   document.getElementById("mediaMensalValor").innerText = moedaBR(media);
 }
 
-function renderizarCategoriasTop3(dados) {
-  const total = Number(dados.total_mes || 0);
-  const cat = dados.categorias || {};
+function renderizarTopCategorias(dados) {
+  const lista = document.getElementById("topCategoriasList");
+  if (!lista) return;
 
-  const nomes = document.getElementsByClassName("cat-name");
-  const valores = document.getElementsByClassName("cat-value");
-  const percentuais = document.getElementsByClassName("cat-percent");
-  const icones = document.getElementsByClassName("cat-icon");
-  const cardsHtml = document.getElementsByClassName("cat");
+  const mesSelecionadoAtual = dados?.mes_selecionado || mesSelecionado;
+  const categoriasMes = dados?.categorias || {};
 
-  const mapaIcones = {
-    "Alimentação": "🍴",
-    "Transporte": "🚗",
-    "Casa": "🏠",
-    "Saúde": "💊",
-    "Limpeza": "🧽",
-    "Vestuário": "👕",
-    "Educação": "📚",
-    "Lazer": "🎮",
-    "Comunicação": "📱",
-    "Higiene": "🧴",
-    "Outros": "•••"
-  };
+  const todasCategorias = new Set();
 
-  const top3 = Object.entries(cat)
-    .map(([nome, valor]) => ({ nome, valor: Number(valor || 0) }))
-    .filter(c => c.valor > 0)
-    .sort((a, b) => b.valor - a.valor)
-    .slice(0, 3);
+  Object.keys(categoriasMes).forEach(cat => todasCategorias.add(cat));
 
-  for (let i = 0; i < cardsHtml.length; i++) {
-    if (i < 3) {
-      const card = top3[i] || { nome: "-", valor: 0 };
+  mesesGrafico.forEach(m => {
+    Object.keys(m.categorias || {}).forEach(cat => todasCategorias.add(cat));
+  });
 
-      cardsHtml[i].style.display = "flex";
-      nomes[i].innerText = card.nome;
-      valores[i].innerText = moedaBR(card.valor);
-      percentuais[i].innerText = percentual(card.valor, total);
-      icones[i].innerText = mapaIcones[card.nome] || "🏷️";
-    } else {
-      cardsHtml[i].style.display = "none";
-    }
+  const linhas = [...todasCategorias].map(nome => {
+    const valorMes = Number(categoriasMes[nome] || 0);
+
+    const outrosMeses = mesesGrafico.filter(m => m.mes !== mesSelecionadoAtual);
+    const somaOutros = outrosMeses.reduce((acc, m) => {
+      return acc + Number((m.categorias || {})[nome] || 0);
+    }, 0);
+
+    const mediaOutros = outrosMeses.length > 0 ? somaOutros / outrosMeses.length : 0;
+
+    return {
+      nome,
+      valorMes,
+      mediaOutros
+    };
+  })
+  .filter(c => c.valorMes > 0 || c.mediaOutros > 0)
+  .sort((a, b) => b.valorMes - a.valorMes)
+  .slice(0, 10);
+
+  const maiorReferencia = Math.max(
+    ...linhas.map(c => Math.max(c.valorMes, c.mediaOutros)),
+    1
+  );
+
+  lista.innerHTML = "";
+
+  if (linhas.length === 0) {
+    lista.innerHTML = `
+      <div class="top-category-empty">
+        Nenhuma categoria encontrada para este período.
+      </div>
+    `;
+    return;
   }
 
-  renderizarDonutLegenda(top3, total);
+  linhas.forEach((cat, index) => {
+    const larguraMes = Math.max((cat.valorMes / maiorReferencia) * 100, cat.valorMes > 0 ? 6 : 0);
+    const larguraMedia = Math.max((cat.mediaOutros / maiorReferencia) * 100, cat.mediaOutros > 0 ? 6 : 0);
+
+    const row = document.createElement("div");
+    row.className = "top-category-row";
+
+    row.innerHTML = `
+      <div class="top-category-rank">${index + 1}</div>
+
+      <div class="top-category-icon">
+        ${iconeCategoriaMinimalista(cat.nome)}
+      </div>
+
+      <div class="top-category-main">
+        <div class="top-category-name">${cat.nome}</div>
+
+        <div class="top-category-bars">
+          <div class="top-category-track">
+            <div class="top-category-fill current" style="width:${larguraMes}%"></div>
+          </div>
+
+          <div class="top-category-track">
+            <div class="top-category-fill average" style="width:${larguraMedia}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="top-category-value current">${moedaBR(cat.valorMes)}</div>
+      <div class="top-category-value average">${moedaBR(cat.mediaOutros)}</div>
+    `;
+
+    lista.appendChild(row);
+  });
 }
+
+function iconeCategoriaMinimalista(nome) {
+  const n = String(nome || "").toLowerCase();
+
+  if (n.includes("aliment") || n.includes("alimento") || n.includes("bebida")) {
+    return `
+      <svg viewBox="0 0 24 24">
+        <path d="M7 3v18" />
+        <path d="M4 3v6a3 3 0 0 0 6 0V3" />
+        <path d="M17 3v18" />
+        <path d="M14 3h4v8h-4z" />
+      </svg>
+    `;
+  }
+
+  if (n.includes("transporte") || n.includes("combust")) {
+    return `
+      <svg viewBox="0 0 24 24">
+        <path d="M5 16h14" />
+        <path d="M7 16l1-6h8l1 6" />
+        <circle cx="8" cy="18" r="1.5" />
+        <circle cx="16" cy="18" r="1.5" />
+        <path d="M9 10V7h6v3" />
+      </svg>
+    `;
+  }
+
+  if (n.includes("casa") || n.includes("moradia")) {
+    return `
+      <svg viewBox="0 0 24 24">
+        <path d="M4 11l8-7 8 7" />
+        <path d="M6 10v10h12V10" />
+        <path d="M10 20v-6h4v6" />
+      </svg>
+    `;
+  }
+
+  if (n.includes("saúde") || n.includes("saude")) {
+    return `
+      <svg viewBox="0 0 24 24">
+        <path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z" />
+        <path d="M9 12h6" />
+        <path d="M12 9v6" />
+      </svg>
+    `;
+  }
+
+  if (n.includes("educ")) {
+    return `
+      <svg viewBox="0 0 24 24">
+        <path d="M4 8l8-4 8 4-8 4-8-4z" />
+        <path d="M6 10v5c2 2 10 2 12 0v-5" />
+      </svg>
+    `;
+  }
+
+  if (n.includes("lazer")) {
+    return `
+      <svg viewBox="0 0 24 24">
+        <path d="M7 15h10" />
+        <path d="M9 13v4" />
+        <path d="M15 13v4" />
+        <path d="M6 10h12l2 8H4l2-8z" />
+      </svg>
+    `;
+  }
+
+  if (n.includes("comunicação") || n.includes("comunicacao")) {
+    return `
+      <svg viewBox="0 0 24 24">
+        <rect x="7" y="3" width="10" height="18" rx="2" />
+        <path d="M11 18h2" />
+      </svg>
+    `;
+  }
+
+  if (n.includes("limpeza") || n.includes("higiene")) {
+    return `
+      <svg viewBox="0 0 24 24">
+        <path d="M8 11h8" />
+        <path d="M9 11l1-7h4l1 7" />
+        <path d="M6 11h12l-1 10H7L6 11z" />
+      </svg>
+    `;
+  }
+
+  if (n.includes("vest")) {
+    return `
+      <svg viewBox="0 0 24 24">
+        <path d="M9 4l3 3 3-3 4 3-2 4-2-1v10H9V10l-2 1-2-4 4-3z" />
+      </svg>
+    `;
+  }
+
+  if (n.includes("pet")) {
+    return `
+      <svg viewBox="0 0 24 24">
+        <circle cx="8" cy="9" r="1.5" />
+        <circle cx="16" cy="9" r="1.5" />
+        <circle cx="10" cy="6" r="1.2" />
+        <circle cx="14" cy="6" r="1.2" />
+        <path d="M8 16c1.5-3 6.5-3 8 0 1 2-1 4-4 4s-5-2-4-4z" />
+      </svg>
+    `;
+  }
+
+  return `
+    <svg viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8" />
+      <path d="M9 12h6" />
+    </svg>
+  `;
+}
+
 
 function renderizarDonutLegenda(top3, total) {
   const legend = document.getElementById("donutLegend");
