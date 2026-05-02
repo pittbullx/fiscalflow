@@ -628,7 +628,7 @@ function renderizarGraficoBarras(dados) {
 
   meses.forEach(m => {
     const total = Number(m.total || 0);
-    const altura = total > 0 ? Math.max((total / maior) * 100, 6) : 5;
+    const altura = total > 0 ? Math.max((total / escalaMax) * 100, 5) : 4;
     const ativo = m.mes === dados.mes_selecionado;
 
     const item = document.createElement("div");
