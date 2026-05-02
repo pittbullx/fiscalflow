@@ -601,8 +601,9 @@ function gerarAnoCompleto(ano, dados) {
 
     meses.push({
       mes: mesStr,
-      total: existente ? existente.total : 0,
-      quantidade: existente ? existente.quantidade : 0
+      total: existente ? Number(existente.total || 0) : 0,
+      quantidade: existente ? Number(existente.quantidade || 0) : 0,
+      categorias: existente ? (existente.categorias || {}) : {}
     });
   }
 
