@@ -11,11 +11,11 @@ const addItemBtn = document.getElementById("addItemBtn");
 const manualTotal = document.getElementById("manualTotal");
 
 let itensManuais = [];
+
 // Screens
 const homeScreen = document.getElementById("homeScreen");
 const scanScreen = document.getElementById("scanScreen");
 const processingScreen = document.getElementById("processingScreen");
-const creditScreen = document.getElementById("creditScreen");
 
 // Buttons
 const openScanCard = document.getElementById("openScanCard");
@@ -23,19 +23,6 @@ const bottomScanBtn = document.getElementById("bottomScanBtn");
 const backHomeBtn = document.getElementById("backHomeBtn");
 const backFromProcessingBtn = document.getElementById("backFromProcessingBtn");
 const flashBtn = document.getElementById("flashBtn");
-const backFromCreditBtn = document.getElementById("backFromCreditBtn");
-const autoModeCard = document.getElementById("autoModeCard");
-const advancedModeCard = document.getElementById("advancedModeCard");
-const advancedArea = document.getElementById("advancedArea");
-const ccValor = document.getElementById("ccValor");
-const ccParcelas = document.getElementById("ccParcelas");
-const ccFechamento = document.getElementById("ccFechamento");
-const previewParcelas = document.getElementById("previewParcelas");
-const creditInfo = document.getElementById("creditInfo");
-const confirmCreditBtn = document.getElementById("confirmCreditBtn");
-
-let modoCartao = "automatico";
-let notaCartaoAtual = null;
 
 // Elements
 const qrResult = document.getElementById("qrResult");
@@ -118,11 +105,9 @@ function calcularTotal() {
 }
 
 function showScreen(screen) {
-  if (!screen) return;
-
-  document.querySelectorAll(".screen").forEach(s => {
-    s.classList.remove("active");
-  });
+  homeScreen.classList.remove("active");
+  scanScreen.classList.remove("active");
+  processingScreen.classList.remove("active");
 
   screen.classList.add("active");
 }
@@ -157,37 +142,6 @@ if (addItemBtn) {
 
 if (salvarManualBtn) {
   salvarManualBtn.addEventListener("click", salvarDespesaManual);
-}
-
-if (backFromCreditBtn) {
-  backFromCreditBtn.addEventListener("click", () => showScreen(homeScreen));
-}
-
-if (autoModeCard) {
-  autoModeCard.addEventListener("click", () => {
-    modoCartao = "automatico";
-    autoModeCard.style.borderColor = "rgba(59,130,246,.9)";
-    if (advancedModeCard) advancedModeCard.style.borderColor = "rgba(96,139,255,.22)";
-    if (advancedArea) advancedArea.classList.add("hidden");
-    gerarPreviewParcelas();
-  });
-}
-
-if (advancedModeCard) {
-  advancedModeCard.addEventListener("click", () => {
-    modoCartao = "avancado";
-    advancedModeCard.style.borderColor = "rgba(59,130,246,.9)";
-    if (autoModeCard) autoModeCard.style.borderColor = "rgba(96,139,255,.22)";
-    if (advancedArea) advancedArea.classList.remove("hidden");
-    gerarPreviewParcelas();
-  });
-}
-
-if (ccParcelas) ccParcelas.addEventListener("change", gerarPreviewParcelas);
-if (ccFechamento) ccFechamento.addEventListener("input", gerarPreviewParcelas);
-
-if (confirmCreditBtn) {
-  confirmCreditBtn.addEventListener("click", () => showScreen(homeScreen));
 }
 // ===== ABAS SCAN / MANUAL =====
 
@@ -795,12 +749,7 @@ function resetarTelaProcessamento() {
   carregarDashboard();
   carregarUltimasNotas();
   limparFormularioManual();
-
-  if (isPagamentoCredito(nota)) {
-    setTimeout(() => abrirTelaCartao(nota), 700);
-  } else {
-    mostrarAcoesPosProcessamento();
-  }
+  mostrarAcoesPosProcessamento();
 }
 
 function converterDataBRparaISO(dataBR) {
@@ -914,141 +863,12 @@ function limparFormularioManual() {
   itensManuais = [];
 
   adicionarItem();
-
   calcularTotal();
-}
-
-// ================= CARTÃO DE CRÉDITO =================
-
-function isPagamentoCredito(nota) {
-  const texto = JSON.stringify(nota || {}).toLowerCase();
-
-  return (
-    texto.includes("credito") ||
-    texto.includes("crédito") ||
-    texto.includes("cartao de credito") ||
-    texto.includes("cartão de crédito") ||
-    texto.includes("03 - cart")
-  );
-}
-
-function abrirTelaCartao(nota) {
-  notaCartaoAtual = nota || {};
-
-  const valorTotal = normalizarValorCartao(notaCartaoAtual.valor_total);
-  if (ccValor) ccValor.value = moedaBR(valorTotal);
-
-  modoCartao = "automatico";
-  if (autoModeCard) autoModeCard.style.borderColor = "rgba(59,130,246,.9)";
-  if (advancedModeCard) advancedModeCard.style.borderColor = "rgba(96,139,255,.22)";
-  if (advancedArea) advancedArea.classList.add("hidden");
-  if (ccParcelas) ccParcelas.value = "1";
-  if (ccFechamento) ccFechamento.value = "10";
-
-  gerarPreviewParcelas();
-  showScreen(creditScreen);
-}
-
-function gerarPreviewParcelas() {
-  if (!previewParcelas) return;
-
-  const nota = notaCartaoAtual || {};
-  const valorTotal = normalizarValorCartao(nota.valor_total || 0);
-  const parcelas = parseInt(ccParcelas?.value || "1", 10);
-  const valorParcela = parcelas > 0 ? valorTotal / parcelas : valorTotal;
-  const dataCompra = obterDataCompraCartao(nota);
-  const fechamento = parseInt(ccFechamento?.value || "10", 10);
-
-  let primeiroMes;
-
-  if (modoCartao === "avancado") {
-    primeiroMes = calcularMesFaturaCartao(dataCompra, fechamento);
-    if (creditInfo) {
-      creditInfo.innerText = "No modo avançado, o mês da fatura considera o fechamento informado pelo usuário.";
-    }
-  } else {
-    primeiroMes = new Date(dataCompra.getFullYear(), dataCompra.getMonth(), 1);
-    if (creditInfo) {
-      creditInfo.innerText = "No modo automático, o gasto entra no mês da compra. Para controlar fechamento e fatura, use o modo avançado.";
-    }
-  }
-
-  previewParcelas.innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 14px;border-bottom:1px solid rgba(148,163,184,.12);color:#cbd5e1;font-size:13px;">
-      <span>Parcela</span>
-      <span>Valor</span>
-      <span>Mês</span>
-    </div>
-  `;
-
-  for (let i = 0; i < parcelas; i++) {
-    const mesParcela = new Date(primeiroMes.getFullYear(), primeiroMes.getMonth() + i, 1);
-
-    previewParcelas.innerHTML += `
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 14px;border-bottom:1px solid rgba(148,163,184,.12);align-items:center;">
-        <strong>${i + 1} de ${parcelas}</strong>
-        <strong>${moedaBR(valorParcela)}</strong>
-        <span style="display:inline-flex;justify-content:center;padding:5px 8px;border-radius:999px;background:rgba(34,197,94,.18);color:#63f58d;font-weight:800;white-space:nowrap;">${formatarMesAnoCartao(mesParcela)}</span>
-      </div>
-    `;
-  }
-}
-
-function calcularMesFaturaCartao(dataCompra, diaFechamento) {
-  const diaCompra = dataCompra.getDate();
-
-  if (diaCompra <= diaFechamento) {
-    return new Date(dataCompra.getFullYear(), dataCompra.getMonth(), 1);
-  }
-
-  return new Date(dataCompra.getFullYear(), dataCompra.getMonth() + 1, 1);
-}
-
-function obterDataCompraCartao(nota) {
-  const candidatos = [nota?.data_compra, nota?.data_emissao, nota?.data, nota?.created_at];
-  const valor = candidatos.find(Boolean);
-
-  if (!valor) return new Date();
-
-  if (typeof valor === "string" && valor.includes("/")) {
-    const partes = valor.split("/");
-    if (partes.length === 3) {
-      const [dia, mes, ano] = partes;
-      return new Date(Number(ano), Number(mes) - 1, Number(dia));
-    }
-  }
-
-  const data = new Date(valor);
-  return isNaN(data.getTime()) ? new Date() : data;
-}
-
-function normalizarValorCartao(valor) {
-  if (valor == null) return 0;
-  if (typeof valor === "number") return valor;
-
-  return Number(
-    String(valor)
-      .replace("R$", "")
-      .replace(/\./g, "")
-      .replace(",", ".")
-      .trim()
-  ) || 0;
-}
-
-function formatarMesAnoCartao(data) {
-  return data.toLocaleDateString("pt-BR", {
-    month: "short",
-    year: "numeric"
-  }).replace(".", "").toUpperCase();
 }
 
 carregarDashboard();
 carregarUltimasNotas();
 adicionarItem();
-
-if (window.location.search.includes("debug=cartao")) {
-  abrirTelaCartao({ valor_total: 1250, data_compra: new Date().toISOString(), forma_pagamento: "03 - Cartão de Crédito" });
-}
 
 function atualizarEtapaProcessamento(etapa) {
   const steps = document.querySelectorAll(".step");
