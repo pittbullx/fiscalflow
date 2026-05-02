@@ -513,6 +513,7 @@ function aplicarDashboardPorMes(mes) {
   montarSeletorPeriodo();
   renderizarGraficoBarras(dados);
   renderizarCategoriasTop3(dados);
+  renderizarInsightsMensais();
   
 }
 function formatarLabelMes(mes) {
@@ -647,6 +648,29 @@ function renderizarGraficoBarras(dados) {
 
     barsLayer.appendChild(item);
   });
+}
+
+function renderizarInsightsMensais() {
+  if (!mesesGrafico || mesesGrafico.length === 0) return;
+
+  const mesesComGasto = mesesGrafico.filter(m => Number(m.total || 0) > 0);
+
+  if (mesesComGasto.length === 0) return;
+
+  const maior = [...mesesComGasto].sort((a, b) => b.total - a.total)[0];
+  const menor = [...mesesComGasto].sort((a, b) => a.total - b.total)[0];
+
+  const media =
+    mesesComGasto.reduce((soma, m) => soma + Number(m.total || 0), 0) /
+    mesesComGasto.length;
+
+  document.getElementById("maiorDespesaMes").innerText = maior.label;
+  document.getElementById("maiorDespesaValor").innerText = moedaBR(maior.total);
+
+  document.getElementById("menorDespesaMes").innerText = menor.label;
+  document.getElementById("menorDespesaValor").innerText = moedaBR(menor.total);
+
+  document.getElementById("mediaMensalValor").innerText = moedaBR(media);
 }
 
 function renderizarCategoriasTop3(dados) {

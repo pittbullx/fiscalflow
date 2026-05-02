@@ -1293,6 +1293,89 @@
   white-space: nowrap;
 }
 
+.monthly-insights-card {
+  margin-top: 14px;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(96,139,255,.14);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.monthly-insight-row {
+  display: grid;
+  grid-template-columns: 34px 1fr auto 14px;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border-bottom: 1px solid rgba(148,163,184,.12);
+}
+
+.monthly-insight-row:last-child {
+  border-bottom: none;
+}
+
+.monthly-insight-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.monthly-insight-icon.blue {
+  background: rgba(59,130,246,.20);
+  color: #38bdf8;
+}
+
+.monthly-insight-icon.purple {
+  background: rgba(168,85,247,.20);
+  color: #c084fc;
+}
+
+.monthly-insight-icon.green {
+  background: rgba(16,185,129,.20);
+  color: #34d399;
+}
+
+.monthly-insight-label {
+  font-size: 10px;
+  color: #94a3b8;
+  margin-bottom: 2px;
+}
+
+.monthly-insight-title {
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.monthly-insight-value {
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.blue-text {
+  color: #38bdf8;
+}
+
+.purple-text {
+  color: #c084fc;
+}
+
+.green-text {
+  color: #34d399;
+}
+
+.monthly-insight-arrow {
+  color: #64748b;
+  font-size: 20px;
+}
+
+
   </style>
 </head>
 
@@ -1333,10 +1416,46 @@
           <option value="ANO">Ano</option>
         </select>
       </div>
-
         <div id="barChart" class="bar-chart"></div>
-
       </div>
+
+<div class="monthly-insights-card">
+  <div class="monthly-insight-row">
+    <div class="monthly-insight-icon blue">↗</div>
+
+    <div class="monthly-insight-text">
+      <div class="monthly-insight-label">Maior despesa</div>
+      <div class="monthly-insight-title" id="maiorDespesaMes">-</div>
+    </div>
+
+    <div class="monthly-insight-value blue-text" id="maiorDespesaValor">R$ 0,00</div>
+    <div class="monthly-insight-arrow">›</div>
+  </div>
+
+  <div class="monthly-insight-row">
+    <div class="monthly-insight-icon purple">↘</div>
+
+    <div class="monthly-insight-text">
+      <div class="monthly-insight-label">Menor despesa</div>
+      <div class="monthly-insight-title" id="menorDespesaMes">-</div>
+    </div>
+
+    <div class="monthly-insight-value purple-text" id="menorDespesaValor">R$ 0,00</div>
+    <div class="monthly-insight-arrow">›</div>
+  </div>
+
+  <div class="monthly-insight-row">
+    <div class="monthly-insight-icon green">ⓢ</div>
+
+    <div class="monthly-insight-text">
+      <div class="monthly-insight-label">Média mensal</div>
+      <div class="monthly-insight-title">Últimos meses</div>
+    </div>
+
+    <div class="monthly-insight-value green-text" id="mediaMensalValor">R$ 0,00</div>
+    <div class="monthly-insight-arrow">›</div>
+  </div>
+</div>
 
       <div class="glass-card categories-card">
         <div class="categories-title">Top 3 Categorias</div>
@@ -1635,6 +1754,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=3053"></script>
+  <script src="app.js?v=3055"></script>
 </body>
 </html>
