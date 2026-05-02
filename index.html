@@ -1437,7 +1437,7 @@
 
 .top-categories-columns {
   display: grid;
-  grid-template-columns: 1fr 72px 72px;
+  grid-template-columns: 1fr 92px;
   gap: 8px;
   padding: 0 0 8px;
   border-bottom: 1px solid rgba(148,163,184,.14);
@@ -1452,7 +1452,7 @@
 
 .top-category-row {
   display: grid;
-  grid-template-columns: 18px 28px 1fr 58px 58px;
+  grid-template-columns: 20px 30px 1fr 92px;
   align-items: center;
   gap: 8px;
   padding: 11px 0;
@@ -1544,10 +1544,6 @@
   color: #38bdf8;
 }
 
-.top-category-value.average {
-  color: #aeb8d2;
-}
-
 @media (max-width: 390px) {
   .top-categories-card {
     padding: 16px 12px;
@@ -1570,6 +1566,31 @@
     display: none;
   }
 }
+
+.top-category-values {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.top-category-value.current {
+  font-size: 11px;
+  font-weight: 900;
+  color: #38bdf8;
+}
+
+.top-category-average {
+  margin-top: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+
+
+
+
+
+
 
 
 
@@ -1669,11 +1690,10 @@
     </div>
   </div>
 
-  <div class="top-categories-columns">
-    <span>Categoria</span>
-    <span>Mês</span>
-    <span>Média</span>
-  </div>
+<div class="top-categories-columns">
+  <span>Categoria</span>
+  <span>Valores</span>
+</div>
 
   <div id="topCategoriasList" class="top-categories-list"></div>
 </div>
@@ -1951,6 +1971,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=3067"></script>
+  <script src="app.js?v=3068"></script>
 </body>
 </html>

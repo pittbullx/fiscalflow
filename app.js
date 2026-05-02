@@ -772,8 +772,10 @@ function renderizarTopCategorias(dados) {
         </div>
       </div>
 
-      <div class="top-category-value current">${moedaBR(cat.valorMes)}</div>
-      <div class="top-category-value average">${moedaBR(cat.mediaOutros)}</div>
+      <div class="top-category-values">
+        <div class="top-category-value current">${moedaBR(cat.valorMes)}</div>
+        <div class="top-category-average">Média ${moedaBR(cat.mediaOutros)}</div>
+      </div>
     `;
 
     lista.appendChild(row);
