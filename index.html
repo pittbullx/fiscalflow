@@ -1251,11 +1251,12 @@
 /* barras */
 .bar-item {
   flex: 1;
-  height: calc(100% - 26px); /* 🔥 IGUAL AO BOTTOM */
+  height: calc(100% - 26px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  transform: translateY(26px); /* desce barras + meses até a linha 0 */
 }
 
 .bar {
@@ -1618,6 +1619,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=3006"></script>
+  <script src="app.js?v=3007"></script>
 </body>
 </html>
