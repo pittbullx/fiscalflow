@@ -1186,13 +1186,10 @@
 .bar-chart {
   position: relative;
   height: 170px;
-  padding: 10px 0 26px 34px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 4px;
+  padding: 0;
 }
 
+/* linhas horizontais */
 .bar-chart::before {
   content: "";
   position: absolute;
@@ -1200,26 +1197,22 @@
   right: 0;
   top: 10px;
   bottom: 26px;
-
   background-image:
     linear-gradient(to right, rgba(148,163,184,.25) 50%, transparent 50%),
     linear-gradient(to right, rgba(148,163,184,.25) 50%, transparent 50%),
     linear-gradient(to right, rgba(148,163,184,.25) 50%, transparent 50%),
     linear-gradient(to right, rgba(148,163,184,.25) 50%, transparent 50%);
-
   background-size: 10px 1px;
   background-repeat: repeat-x;
-
   background-position:
     left 0%,
     left 25%,
     left 50%,
     left 75%;
-
   pointer-events: none;
 }
 
-/* 🔥 LINHA DO ZERO (ALINHADA COM BASE DAS BARRAS) */
+/* linha zero */
 .bar-chart::after {
   content: "";
   position: absolute;
@@ -1230,7 +1223,6 @@
   background: rgba(148,163,184,.7);
 }
 
-/* eixo Y */
 .y-axis-labels {
   position: absolute;
   left: 0;
@@ -1254,17 +1246,31 @@
 .y-axis-labels span:nth-child(4) { top: 75%; }
 .y-axis-labels span:nth-child(5) { top: 100%; }
 
-/* barras */
-.bar-item {
-  flex: 1;
-  height: calc(100% - 26px);
+.bars-layer {
+  position: absolute;
+  left: 34px;
+  right: 0;
+  top: 10px;
+  bottom: 26px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 4px;
+  z-index: 2;
+}
+
+.bar-item {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  min-width: 0;
 }
 
 .bar {
+  position: absolute;
+  bottom: 0; /* base exatamente na linha zero */
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
   max-width: 22px;
   min-height: 6px;
@@ -1278,8 +1284,13 @@
 }
 
 .bar-label {
-  margin-top: 4px;
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 10px;
+  color: #e5e7eb;
+  white-space: nowrap;
 }
 
   </style>
@@ -1624,6 +1635,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=3055"></script>
+  <script src="app.js?v=3053"></script>
 </body>
 </html>

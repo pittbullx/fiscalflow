@@ -624,7 +624,11 @@ function renderizarGraficoBarras(dados) {
       <span>${Math.round(escalaMax * 0.25)}</span>
       <span>0</span>
     </div>
+
+    <div class="bars-layer"></div>
   `;
+
+  const barsLayer = chart.querySelector(".bars-layer");
 
   meses.forEach(m => {
     const total = Number(m.total || 0);
@@ -633,7 +637,6 @@ function renderizarGraficoBarras(dados) {
 
     const item = document.createElement("div");
     item.className = `bar-item ${ativo ? "active" : ""}`;
-    item.style.setProperty("--bar-height", `${altura}%`);
 
     item.innerHTML = `
       <div class="bar ${ativo ? "active" : ""}" style="height:${altura}%"></div>
@@ -642,7 +645,7 @@ function renderizarGraficoBarras(dados) {
 
     item.onclick = () => aplicarDashboardPorMes(m.mes);
 
-    chart.appendChild(item);
+    barsLayer.appendChild(item);
   });
 }
 
