@@ -1356,7 +1356,26 @@
     line-height: 14px;
   }
 
+  .expenses-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
 
+  .chart-period-select {
+    height: 38px;
+    min-width: 72px;
+    border-radius: 16px;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .dashboard-top-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 
 
   </style>
@@ -1372,16 +1391,11 @@
           <div class="dashboard-page-title">Despesas</div>
         </div>
 
-        <div class="dashboard-top-actions">
-          <button class="icon-btn" type="button">
-            <img src="Engrenagem.png" class="gear-icon" alt="Configurações">
-          </button>
-
-          <select id="periodSelector" class="month-select top-period-select">
-            <option value="12M">12M</option>
-            <option value="ANO">Ano</option>
-          </select>
-        </div>
+      <div class="dashboard-top-actions">
+        <button class="icon-btn" type="button">
+          <img src="Engrenagem.png" class="gear-icon" alt="Configurações">
+        </button>
+      </div>
       </div>
     
      
@@ -1396,9 +1410,14 @@
       </div>
 
       <div class="glass-card expenses-card">
-        <div class="expenses-top">
-          <div class="expenses-title">Despesas por mês</div>
-        </div>
+      <div class="expenses-top">
+        <div class="expenses-title">Despesas por mês</div>
+
+        <select id="periodSelector" class="month-select chart-period-select">
+          <option value="12M">12M</option>
+          <option value="ANO">Ano</option>
+        </select>
+      </div>
 
         <div id="barChart" class="bar-chart"></div>
 
@@ -1701,6 +1720,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=1060"></script>
+  <script src="app.js?v=1070"></script>
 </body>
 </html>
