@@ -481,6 +481,9 @@ async function carregarDashboard() {
     categorias: m.categorias || {}
   }));
 
+
+
+
     dashboardCache = {};
 
     mesesGrafico.forEach(m => {
@@ -521,6 +524,23 @@ function formatarLabelMes(mes) {
   const [ano, mesNum] = mes.split("-");
   return nomes[Number(mesNum) - 1];
 }
+function nomeMesCompleto(yyyyMM) {
+  if (!yyyyMM) return "-";
+
+  const meses = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+  ];
+
+  const mesIndex = parseInt(yyyyMM.split("-")[1], 10) - 1;
+
+  return meses[mesIndex] || "-";
+}
+
+
+
+
+
 function aplicarDashboard(dados) {
   dashboardAtual = dados;
   mesSelecionado = dados.mes_selecionado;
