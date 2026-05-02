@@ -528,8 +528,38 @@ function aplicarDashboardPorMes(mes) {
   renderizarGraficoBarras(dados);
   renderizarTopCategorias(dados);
   renderizarInsightsMensais();
+  atualizarComparativoMes(dados);
   
 }
+
+function atualizarComparativoMes(dados) {
+  const percentEl = document.getElementById("comparePercent");
+  const textEl = document.getElementById("compareText");
+
+  if (!percentEl || !textEl) return;
+
+  const mesAtual = dados.mes_selecionado;
+  const indiceAtual = mesesGrafico.findIndex(m => m.mes === mesAtual);
+  const mesAnterior = indiceAtual > 0 ? mesesGrafico[indiceAtual - 1] : null;
+
+  const valorAtual = Number(dados.total_mes || 0);
+  const valorAnterior = Number(mesAnterior?.total || 0);
+
+  if (!mesAnterior || valorAnterior <= 0) {
+    percentEl.innerText = "0%";
+    textEl.innerText = "sem mês anterior";
+    return;
+  }
+
+  const variacao = ((valorAtual - valorAnterior) / valorAnterior) * 100;
+  const seta = variacao >= 0 ? "↑" : "↓";
+  const sinal = variacao >= 0 ? "+" : "";
+
+  percentEl.innerText = `${seta} ${sinal}${Math.round(variacao)}%`;
+  textEl.innerText = `vs. ${formatarLabelMes(mesAnterior.mes)}`;
+}
+
+
 function formatarLabelMes(mes) {
   const nomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
   const [ano, mesNum] = mes.split("-");
