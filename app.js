@@ -625,13 +625,16 @@ function renderizarGraficoBarras(dados) {
   chart.innerHTML = "";
 
   meses.forEach(m => {
-    const altura = Math.max((Number(m.total || 0) / maior) * 100, 8);
+    const total = Number(m.total || 0);
+    const altura = Math.max((total / maior) * 100, 6);
     const ativo = m.mes === dados.mes_selecionado;
 
     const item = document.createElement("div");
-    item.className = "bar-item";
+    item.className = `bar-item ${ativo ? "active" : ""}`;
+    item.style.setProperty("--bar-height", `${altura}%`);
 
     item.innerHTML = `
+      <div class="bar-value">${Math.round(total)}</div>
       <div class="bar ${ativo ? "active" : ""}" style="height:${altura}%"></div>
       <div class="bar-label">${m.label}</div>
     `;

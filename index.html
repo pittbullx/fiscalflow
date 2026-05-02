@@ -1184,6 +1184,149 @@
     box-shadow: 0 0 20px rgba(37,132,255,.35);
   }
 
+  .dashboard-top {
+    margin-bottom: 28px;
+  }
+
+  .dashboard-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .dashboard-page-title {
+    font-size: 24px;
+    font-weight: 900;
+  }
+
+  .dashboard-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .menu-btn {
+    font-size: 24px;
+  }
+
+  .top-period-select {
+    height: 50px;
+    min-width: 82px;
+    border-radius: 18px;
+    font-size: 16px;
+  }
+
+  .dashboard-total-area {
+    margin-bottom: 22px;
+  }
+
+  .dashboard-total-label {
+    color: #aeb8d2;
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .dashboard-total-value {
+    font-size: 44px;
+    font-weight: 950;
+    letter-spacing: -1.5px;
+    line-height: 1;
+  }
+
+  .dashboard-compare {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dashboard-compare span {
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(16,185,129,.18);
+    color: #34d399;
+    font-weight: 900;
+  }
+
+  .dashboard-compare small {
+    color: #aeb8d2;
+    font-size: 15px;
+  }
+
+  .expenses-card {
+    padding: 20px 16px 18px;
+  }
+
+  .bar-chart {
+    position: relative;
+    height: 230px;
+    padding: 24px 0 24px 34px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 5px;
+    background-image:
+      linear-gradient(to top, rgba(148,163,184,.18) 1px, transparent 1px);
+    background-size: 100% 20%;
+    background-position: left 24px;
+  }
+
+  .bar-chart::before {
+    content: "500\A 400\A 300\A 200\A 100\A 0";
+    white-space: pre;
+    position: absolute;
+    left: 0;
+    top: 16px;
+    bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #cbd5e1;
+    font-size: 11px;
+    line-height: 1;
+  }
+
+  .bar-item {
+    position: relative;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .bar-value {
+    position: absolute;
+    bottom: calc(var(--bar-height) + 26px);
+    font-size: 10px;
+    font-weight: 800;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+
+  .bar-item.active .bar-value {
+    color: #38bdf8;
+  }
+
+  .bar {
+    width: 100%;
+    max-width: 22px;
+    min-height: 8px;
+    border-radius: 6px 6px 2px 2px;
+    background: linear-gradient(180deg, rgba(148,163,184,.62), rgba(71,85,105,.72));
+  }
+
+  .bar.active {
+    background: linear-gradient(180deg, #38bdf8, #0b7cff);
+    box-shadow: 0 0 16px rgba(14,165,233,.35);
+  }
+
+  .bar-label {
+    font-size: 11px;
+    color: #e5e7eb;
+  }
 
 
 
@@ -1200,18 +1343,22 @@
   <div class="app">
 
     <section id="homeScreen" class="screen active">
-      <div class="top">
-        <div class="brand">
-          <img src="Logo.png" class="logo" alt="Logo">
-          <div>
-            <div class="brand-title">Fiscal Flow</div>
-            <div class="brand-sub">Olá, Christiano 👋</div>
-          </div>
+      <div class="top dashboard-top">
+        <div class="dashboard-title-wrap">
+          <button class="icon-btn menu-btn" type="button">☰</button>
+          <div class="dashboard-page-title">Despesas</div>
         </div>
 
-        <button class="icon-btn" type="button">
-          <img src="Engrenagem.png" class="gear-icon" alt="Configurações">
-        </button>
+        <div class="dashboard-top-actions">
+          <button class="icon-btn" type="button">
+            <img src="Engrenagem.png" class="gear-icon" alt="Configurações">
+          </button>
+
+          <select id="periodSelector" class="month-select top-period-select">
+            <option value="12M">12M</option>
+            <option value="ANO">Ano</option>
+          </select>
+        </div>
       </div>
       <div class="card metas-card">
         <div class="metas-header">
@@ -1238,28 +1385,30 @@
       
       
       
+      <div class="dashboard-total-area">
+        <div class="dashboard-total-label">Total dos últimos 12 meses</div>
+        <div class="dashboard-total-value" id="homeTotal">R$ 0,00</div>
+
+        <div class="dashboard-compare">
+          <span>↑ 12%</span>
+          <small>vs. período anterior</small>
+        </div>
+      </div>
+
       <div class="glass-card expenses-card">
         <div class="expenses-top">
-          <div class="expenses-title">Despesas</div>
+          <div class="expenses-title">Despesas por mês</div>
 
           <div class="expenses-actions">
-          <button class="chart-toggle active" id="btnBarChart" type="button" aria-label="Gráfico de barras">
-            <img src="Icone-grafico-de-barras.png" class="chart-icon" alt="">
-          </button>
+            <button class="chart-toggle active" id="btnBarChart" type="button" aria-label="Gráfico de barras">
+              <img src="Icone-grafico-de-barras.png" class="chart-icon" alt="">
+            </button>
 
-          <button class="chart-toggle" id="btnDonutChart" type="button" aria-label="Gráfico de rosca">
-            <img src="Icone-grafico-de-rosca.png" class="chart-icon" alt="">
-          </button>
-            <select id="periodSelector" class="month-select">
-              <option value="12M">12M</option>
-              <option value="ANO">Ano</option>
-            </select>
+            <button class="chart-toggle" id="btnDonutChart" type="button" aria-label="Gráfico de rosca">
+              <img src="Icone-grafico-de-rosca.png" class="chart-icon" alt="">
+            </button>
           </div>
         </div>
-
-        <div class="expenses-total" id="homeTotal">R$ 0,00</div>
-
-
 
         <div id="barChart" class="bar-chart"></div>
 
@@ -1566,6 +1715,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=1002"></script>
+  <script src="app.js?v=1003"></script>
 </body>
 </html>
