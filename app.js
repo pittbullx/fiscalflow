@@ -635,7 +635,6 @@ function renderizarGraficoBarras(dados) {
     item.style.setProperty("--bar-height", `${altura}%`);
 
     item.innerHTML = `
-      <div class="bar-value">${Math.round(total)}</div>
       <div class="bar ${ativo ? "active" : ""}" style="height:${altura}%"></div>
       <div class="bar-label">${m.label}</div>
     `;
