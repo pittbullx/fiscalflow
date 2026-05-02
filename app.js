@@ -732,12 +732,13 @@ function renderizarTopCategorias(dados) {
   const linhas = [...todasCategorias].map(nome => {
     const valorMes = Number(categoriasMes[nome] || 0);
 
-    const outrosMeses = mesesGrafico.filter(m => m.mes !== mesSelecionadoAtual);
-    const somaOutros = outrosMeses.reduce((acc, m) => {
+    const mesesBaseMedia = obterMesesBaseMedia();
+
+    const somaBase = mesesBaseMedia.reduce((acc, m) => {
       return acc + Number((m.categorias || {})[nome] || 0);
     }, 0);
 
-    const mediaOutros = outrosMeses.length > 0 ? somaOutros / outrosMeses.length : 0;
+    const mediaOutros = mesesBaseMedia.length > 0 ? somaBase / mesesBaseMedia.length : 0;
 
     return {
       nome,
@@ -801,6 +802,23 @@ function renderizarTopCategorias(dados) {
 
     lista.appendChild(row);
   });
+}
+
+function obterMesesBaseMedia() {
+  const hoje = new Date();
+  const mesAtual = hoje.toISOString().slice(0, 7);
+  const anoAtual = hoje.getFullYear();
+
+  if (modoPeriodo === "ANO") {
+    return mesesGrafico.filter(m => {
+      const [ano, mes] = m.mes.split("-").map(Number);
+      return ano === anoAtual && mes <= hoje.getMonth() + 1;
+    });
+  }
+
+  return mesesGrafico
+    .filter(m => m.mes <= mesAtual)
+    .slice(-12);
 }
 
 function iconeCategoriaMinimalista(nome) {
