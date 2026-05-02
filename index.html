@@ -873,26 +873,10 @@
         transparent calc(25% - 1px)
       );
   }
-  .bar-chart::after {
-    content: "";
-    position: absolute;
-    left: 34px;
-    right: 0;
-    bottom: 22px; /* 🔥 exatamente onde começa a barra */
-    height: 1px;
-    background: rgba(148,163,184,.6); /* mais forte */
-  }
 
 
-  .bar-item {
-    position: relative;
-    flex: 1;
-    height: calc(100% - 22px); /* 🔥 igual ao bottom do ::after */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-  }
+
+
 
     .bar {
       width: 100%;
@@ -907,10 +891,7 @@
       background: linear-gradient(180deg, #93c5fd, #60a5fa);
     }
 
-    .bar-label {
-      font-size: 12px;
-      color: #d1d5db;
-    }
+
 
     .donut-view {
       height: 120px;
@@ -1235,34 +1216,8 @@
     background-position: left bottom;
   }
 
-  .bar-chart::before {
-    content: "";
-  }
 
-  .y-axis-labels {
-    position: absolute;
-    left: 0;
-    top: 26px;
-    bottom: 34px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    color: #cbd5e1;
-    font-size: 10px;
-    line-height: 1;
-  }
 
-  .bar-item {
-    position: relative;
-    flex: 1;
-    height: calc(100% - 34px);
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 6px;
-  }
 
   .bar {
     width: 100%;
@@ -1277,11 +1232,7 @@
     box-shadow: 0 0 16px rgba(14,165,233,.35);
   }
 
-  .bar-label {
-    font-size: 10px;
-    color: #e5e7eb;
-    white-space: nowrap;
-  }
+
 
 .bar-chart {
   position: relative !important;
@@ -1295,69 +1246,6 @@
   overflow: hidden;
 }
 
-/* linhas horizontais pontilhadas */
-.bar-chart::before {
-  content: "";
-  position: absolute;
-  left: 34px;
-  right: 0;
-  top: 18px;
-  bottom: 16px;
-  background-image:
-    repeating-linear-gradient(to right, rgba(148,163,184,.22) 0 4px, transparent 4px 9px),
-    repeating-linear-gradient(to right, rgba(148,163,184,.22) 0 4px, transparent 4px 9px),
-    repeating-linear-gradient(to right, rgba(148,163,184,.22) 0 4px, transparent 4px 9px),
-    repeating-linear-gradient(to right, rgba(148,163,184,.22) 0 4px, transparent 4px 9px);
-  background-size: 100% 1px;
-  background-repeat: no-repeat;
-  background-position:
-    left 0%,
-    left 25%,
-    left 50%,
-    left 75%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* linha zero */
-.bar-chart::after {
-  content: "";
-  position: absolute;
-  left: 34px;
-  right: 0;
-  bottom: 16px;
-  height: 1px;
-  background: rgba(148,163,184,.55);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.y-axis-labels {
-  position: absolute !important;
-  left: 0 !important;
-  top: 18px !important;
-  bottom: 16px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
-  color: #cbd5e1 !important;
-  font-size: 10px !important;
-  line-height: 1 !important;
-  z-index: 2;
-}
-
-.bar-item {
-  position: relative !important;
-  z-index: 3 !important;
-  flex: 1 !important;
-  height: 100% !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-end !important;
-  align-items: center !important;
-  gap: 0 !important;
-}
 
 .bar {
   width: 100% !important;
@@ -1372,13 +1260,7 @@
   box-shadow: 0 0 16px rgba(14,165,233,.35) !important;
 }
 
-.bar-label {
-  height: 16px !important;
-  line-height: 16px !important;
-  font-size: 10px !important;
-  color: #e5e7eb !important;
-  white-space: nowrap !important;
-}
+
 
 
 
@@ -1402,30 +1284,9 @@
     background-position: left 18px;
   }
 
-  .y-axis-labels {
-    position: absolute;
-    left: 0;
-    top: 18px;
-    bottom: 32px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    color: #cbd5e1;
-    font-size: 10px;
-    line-height: 1;
-  }
 
-  .bar-item {
-    position: relative;
-    flex: 1;
-    height: calc(100% - 32px);
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 6px;
-  }
+
+
 
   .bar {
     width: 100%;
@@ -1440,11 +1301,7 @@
     box-shadow: 0 0 16px rgba(14,165,233,.35);
   }
 
-  .bar-label {
-    font-size: 10px;
-    color: #e5e7eb;
-    white-space: nowrap;
-  }
+
 
   .bar-chart {
     height: 170px;
@@ -1452,20 +1309,9 @@
     background-position: left 18px;
   }
 
-  .y-axis-labels {
-    top: 18px;
-    bottom: 14px;
-  }
 
-  .bar-item {
-    height: calc(100% - 14px);
-    gap: 6px;
-  }
 
-  .bar-label {
-    height: 14px;
-    line-height: 14px;
-  }
+
 
   .expenses-top {
     display: flex;
@@ -1905,6 +1751,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=2001"></script>
+  <script src="app.js?v=2002"></script>
 </body>
 </html>
