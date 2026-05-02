@@ -3,6 +3,12 @@ const N8N_DASHBOARD_URL = "https://n8n.iflows.com.br/webhook/dashboard";
 const N8N_HISTORICO_URL = "https://n8n.iflows.com.br/webhook/historico";
 const tabScan = document.getElementById("tabScan");
 const tabManual = document.getElementById("tabManual");
+const tabOCR = document.getElementById("tabOCR");
+const tabXML = document.getElementById("tabXML");
+const ocrMode = document.getElementById("ocrMode");
+const xmlMode = document.getElementById("xmlMode");
+const ocrFileInput = document.getElementById("ocrFileInput");
+const xmlFileInput = document.getElementById("xmlFileInput");
 const scanMode = document.getElementById("scanMode");
 const manualMode = document.getElementById("manualMode");
 const salvarManualBtn = document.getElementById("salvarManualBtn");
@@ -143,32 +149,61 @@ if (addItemBtn) {
 if (salvarManualBtn) {
   salvarManualBtn.addEventListener("click", salvarDespesaManual);
 }
-// ===== ABAS SCAN / MANUAL =====
+
+// ===== ABAS SCAN / OCR / XML / MANUAL =====
+
+function limparAbasImportacao() {
+  if (tabScan) tabScan.classList.remove("active");
+  if (tabOCR) tabOCR.classList.remove("active");
+  if (tabXML) tabXML.classList.remove("active");
+  if (tabManual) tabManual.classList.remove("active");
+
+  if (scanMode) scanMode.classList.add("hidden");
+  if (ocrMode) ocrMode.classList.add("hidden");
+  if (xmlMode) xmlMode.classList.add("hidden");
+  if (manualMode) manualMode.classList.add("hidden");
+}
 
 function ativarScan(event) {
   if (event) event.preventDefault();
 
-  console.log("clicou SCAN");
+  limparAbasImportacao();
 
-  tabScan.classList.add("active");
-  tabManual.classList.remove("active");
-
-  scanMode.classList.remove("hidden");
-  manualMode.classList.add("hidden");
+  if (tabScan) tabScan.classList.add("active");
+  if (scanMode) scanMode.classList.remove("hidden");
 
   startScan();
+}
+
+function ativarOCR(event) {
+  if (event) event.preventDefault();
+
+  limparAbasImportacao();
+
+  if (tabOCR) tabOCR.classList.add("active");
+  if (ocrMode) ocrMode.classList.remove("hidden");
+
+  stopCamera();
+}
+
+function ativarXML(event) {
+  if (event) event.preventDefault();
+
+  limparAbasImportacao();
+
+  if (tabXML) tabXML.classList.add("active");
+  if (xmlMode) xmlMode.classList.remove("hidden");
+
+  stopCamera();
 }
 
 function ativarManual(event) {
   if (event) event.preventDefault();
 
-  console.log("clicou MANUAL");
+  limparAbasImportacao();
 
-  tabManual.classList.add("active");
-  tabScan.classList.remove("active");
-
-  manualMode.classList.remove("hidden");
-  scanMode.classList.add("hidden");
+  if (tabManual) tabManual.classList.add("active");
+  if (manualMode) manualMode.classList.remove("hidden");
 
   stopCamera();
 }
@@ -177,21 +212,57 @@ if (tabScan) {
   tabScan.addEventListener("pointerdown", ativarScan);
 }
 
+if (tabOCR) {
+  tabOCR.addEventListener("pointerdown", ativarOCR);
+}
+
+if (tabXML) {
+  tabXML.addEventListener("pointerdown", ativarXML);
+}
+
 if (tabManual) {
   tabManual.addEventListener("pointerdown", ativarManual);
 }
 
+document.getElementById("btnSelecionarImagemOCR")?.addEventListener("click", () => {
+  ocrFileInput?.click();
+});
 
+document.getElementById("tirarFotoOCRBtn")?.addEventListener("click", () => {
+  ocrFileInput?.setAttribute("capture", "environment");
+  ocrFileInput?.click();
+});
 
+document.getElementById("selecionarOCRBtn")?.addEventListener("click", () => {
+  ocrFileInput?.removeAttribute("capture");
+  ocrFileInput?.click();
+});
 
+document.getElementById("btnSelecionarXML")?.addEventListener("click", () => {
+  xmlFileInput?.click();
+});
 
+ocrFileInput?.addEventListener("change", () => {
+  if (!ocrFileInput.files.length) return;
 
+  resetarTelaProcessamento();
+  fluxoStatus.innerText = "Processando OCR...";
+  showScreen(processingScreen);
+  atualizarEtapaProcessamento(1);
 
+  alert("Imagem selecionada. Próximo passo: enviar para o fluxo OCR no n8n.");
+});
 
+xmlFileInput?.addEventListener("change", () => {
+  if (!xmlFileInput.files.length) return;
 
+  resetarTelaProcessamento();
+  fluxoStatus.innerText = "Processando XML...";
+  showScreen(processingScreen);
+  atualizarEtapaProcessamento(1);
 
-
-
+  alert("XML selecionado. Próximo passo: enviar para o fluxo XML no n8n.");
+});
 console.log("Fiscal Flow app.js carregado corretamente");
 
 // ================= SCAN =================

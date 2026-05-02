@@ -9,6 +9,11 @@
   <link rel="manifest" href="manifest.json?v=5" />
   <script src="https://unpkg.com/html5-qrcode"></script>
 
+  
+  
+  
+  
+  
   <style>
     * {
       box-sizing: border-box;
@@ -1076,7 +1081,113 @@
     border-color: #3b82f6;
   }
 
+  .import-tabs {
+    grid-template-columns: repeat(4, 1fr);
+  }
 
+  .import-tabs .expense-tab {
+    font-size: 13px;
+    padding: 12px 6px;
+  }
+
+  .import-panel {
+    background: linear-gradient(145deg, rgba(18,30,65,.92), rgba(6,13,31,.95));
+    border: 1px solid rgba(96,139,255,.22);
+    border-radius: 24px;
+    padding: 18px;
+    box-shadow: 0 16px 36px rgba(0,0,0,.32);
+  }
+
+  .import-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 900;
+    margin: 10px 0 8px;
+  }
+
+  .import-sub {
+    text-align: center;
+    color: #aeb8d2;
+    font-size: 15px;
+    line-height: 1.4;
+    margin-bottom: 22px;
+  }
+
+  .upload-zone {
+    border: 1.5px dashed #2584ff;
+    border-radius: 22px;
+    padding: 28px 18px;
+    text-align: center;
+    background: rgba(15,23,42,.45);
+    margin-bottom: 18px;
+  }
+
+  .upload-icon {
+    font-size: 56px;
+    color: #2f8cff;
+    margin-bottom: 12px;
+  }
+
+  .upload-title {
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 6px;
+  }
+
+  .upload-sub {
+    color: #8fa3c7;
+    margin-bottom: 14px;
+  }
+
+  .upload-btn {
+    width: 100%;
+    height: 54px;
+    border-radius: 16px;
+    border: 1px solid #2584ff;
+    background: rgba(37,132,255,.08);
+    color: #2f8cff;
+    font-size: 17px;
+    font-weight: 900;
+  }
+
+  .info-box {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    border-radius: 18px;
+    border: 1px solid rgba(34,197,94,.25);
+    background: rgba(34,197,94,.08);
+    padding: 14px;
+    color: #dbeafe;
+    margin-top: 14px;
+  }
+
+  .info-box strong {
+    display: block;
+    color: white;
+    margin-bottom: 4px;
+  }
+
+  .ocr-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .ocr-action-btn {
+    height: 64px;
+    border-radius: 16px;
+    border: 1px solid rgba(96,139,255,.28);
+    background: rgba(15,23,42,.85);
+    color: white;
+    font-weight: 900;
+  }
+
+  .ocr-action-btn.active {
+    border-color: #2584ff;
+    box-shadow: 0 0 20px rgba(37,132,255,.35);
+  }
 
 
 
@@ -1241,45 +1352,106 @@
       </div>
     </section>
 
-<section id="scanScreen" class="screen">
+    <section id="scanScreen" class="screen">
 
-  <div class="scan-header">
-    <button class="icon-btn" id="backHomeBtn" type="button">‹</button>
-    <div class="screen-title">Adicionar despesa</div>
-    <button class="icon-btn" id="flashBtn" type="button">🔦</button>
-  </div>
-
-  <div class="expense-tabs">
-    <button class="expense-tab active" id="tabScan" type="button">Scan</button>
-    <button class="expense-tab" id="tabManual" type="button">Manual</button>
-  </div>
-
-  <div id="scanMode">
-    <div class="camera-box">
-
-      <div id="reader"></div>
-
-      <div class="camera-placeholder" id="cameraPlaceholder">
-        Toque para iniciar a câmera
+      <div class="scan-header">
+        <button class="icon-btn" id="backHomeBtn" type="button">‹</button>
+        <div class="screen-title">Adicionar despesa</div>
+        <button class="icon-btn" id="flashBtn" type="button">🔦</button>
       </div>
 
-      <div class="scan-frame">
-        <div class="corner tl"></div>
-        <div class="corner tr"></div>
-        <div class="corner bl"></div>
-        <div class="corner br"></div>
-        <div class="laser"></div>
+      <div class="expense-tabs import-tabs">
+        <button class="expense-tab active" id="tabScan" type="button">⌗ Scan</button>
+        <button class="expense-tab" id="tabOCR" type="button">▣ OCR</button>
+        <button class="expense-tab" id="tabXML" type="button">▤ XML</button>
+        <button class="expense-tab" id="tabManual" type="button">✎ Manual</button>
       </div>
 
-      <div class="scan-instruction">
-        Aponte para o QR Code da NFC-e<br>
-        para ler automaticamente
+      <div id="scanMode">
+        <div class="camera-box">
+
+          <div id="reader"></div>
+
+          <div class="camera-placeholder" id="cameraPlaceholder">
+            Toque para iniciar a câmera
+          </div>
+
+          <div class="scan-frame">
+            <div class="corner tl"></div>
+            <div class="corner tr"></div>
+            <div class="corner bl"></div>
+            <div class="corner br"></div>
+            <div class="laser"></div>
+          </div>
+
+          <div class="scan-instruction">
+            Aponte para o QR Code da NFC-e<br>
+            para ler automaticamente
+          </div>
+
+        </div>
       </div>
 
+    <div id="ocrMode" class="manual-mode hidden">
+      <div class="import-panel">
+        <div class="import-title">Ler nota por OCR</div>
+        <div class="import-sub">
+          Tire uma foto ou selecione uma imagem da nota para extrair os dados automaticamente.
+        </div>
+
+        <div class="ocr-actions">
+          <button class="ocr-action-btn active" id="tirarFotoOCRBtn" type="button">📷 Tirar foto</button>
+          <button class="ocr-action-btn" id="selecionarOCRBtn" type="button">🖼️ Galeria</button>
+        </div>
+
+        <div class="upload-zone">
+          <div class="upload-icon">🔍</div>
+          <div class="upload-title">Selecione uma imagem da nota</div>
+          <div class="upload-sub">Formatos aceitos: JPG, PNG ou WEBP</div>
+          <button class="upload-btn" id="btnSelecionarImagemOCR" type="button">Selecionar imagem</button>
+          <input id="ocrFileInput" type="file" accept="image/*" capture="environment" hidden>
+        </div>
+
+        <div class="info-box">
+          <span>✨</span>
+          <div>
+            <strong>OCR com IA</strong>
+            Nossa IA irá ler os dados da nota fiscal pela imagem.
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 
-<div id="manualMode" class="manual-mode hidden">
+    <div id="xmlMode" class="manual-mode hidden">
+      <div class="import-panel">
+        <div class="import-title">Carregar arquivo XML</div>
+        <div class="import-sub">
+          Selecione o arquivo XML da nota fiscal para importar os dados automaticamente.
+        </div>
+
+        <div class="upload-zone">
+          <div class="upload-icon">☁️</div>
+          <div class="upload-title">Arraste e solte o arquivo aqui</div>
+          <div class="upload-sub">ou</div>
+          <button class="upload-btn" id="btnSelecionarXML" type="button">📁 Selecionar arquivo</button>
+          <input id="xmlFileInput" type="file" accept=".xml,text/xml,application/xml" hidden>
+        </div>
+
+        <div class="info-box">
+          <span>🛡️</span>
+          <div>
+            <strong>Seus dados estão seguros</strong>
+            O arquivo é usado somente para leitura da nota fiscal.
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+  <div id="manualMode" class="manual-mode hidden">
 
   <div class="manual-card">
 <label>Forma de pagamento</label>
@@ -1399,6 +1571,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=9030"></script>
+  <script src="app.js?v=1001"></script>
 </body>
 </html>
