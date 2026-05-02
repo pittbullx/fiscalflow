@@ -1193,7 +1193,6 @@
   gap: 4px;
 }
 
-/* 🔥 LINHAS HORIZONTAIS PONTILHADAS */
 .bar-chart::before {
   content: "";
   position: absolute;
@@ -1203,14 +1202,24 @@
   bottom: 26px;
 
   background-image:
-    repeating-linear-gradient(
-      to right,
-      rgba(148,163,184,.25) 0 4px,
-      transparent 4px 10px
-    );
+    linear-gradient(to right, rgba(148,163,184,.25) 50%, transparent 50%),
+    linear-gradient(to right, rgba(148,163,184,.25) 50%, transparent 50%),
+    linear-gradient(to right, rgba(148,163,184,.25) 50%, transparent 50%),
+    linear-gradient(to right, rgba(148,163,184,.25) 50%, transparent 50%);
 
-  background-size: 100% 25%;
-  background-repeat: repeat-y;
+  background-size:
+    10px 1px,
+    10px 1px,
+    10px 1px,
+    10px 1px;
+
+  background-repeat: repeat-x;
+
+  background-position:
+    left 0%,
+    left 25%,
+    left 50%,
+    left 75%;
 
   pointer-events: none;
 }
@@ -1609,6 +1618,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=3005"></script>
+  <script src="app.js?v=3006"></script>
 </body>
 </html>
