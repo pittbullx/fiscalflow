@@ -658,24 +658,39 @@ function aplicarDashboard(dados) {
 }
 
 function montarSeletorPeriodo() {
-  const select = document.getElementById("periodSelector");
-  if (!select) return;
+  const dropdown = document.getElementById("periodDropdown");
+  const btn = document.getElementById("periodDropdownBtn");
+  const label = document.getElementById("periodDropdownLabel");
+  const menu = document.getElementById("periodDropdownMenu");
 
-  select.value = modoPeriodo;
+  if (!dropdown || !btn || !label || !menu) return;
 
-  select.onchange = () => {
-    modoPeriodo = select.value;
+  label.innerText = modoPeriodo === "ANO" ? "Ano" : "12M";
 
-    if (modoPeriodo === "12M") {
-      // 🔥 força mês atual
-      const hoje = new Date();
-      const mesAtual = hoje.toISOString().slice(0, 7);
+  menu.querySelectorAll("button").forEach(button => {
+    button.classList.toggle("active", button.dataset.period === modoPeriodo);
 
-      mesSelecionado = mesAtual;
-    }
+    button.onclick = () => {
+      modoPeriodo = button.dataset.period;
 
-    carregarDashboard();
+      if (modoPeriodo === "12M") {
+        const hoje = new Date();
+        mesSelecionado = hoje.toISOString().slice(0, 7);
+      }
+
+      dropdown.classList.remove("open");
+      carregarDashboard();
+    };
+  });
+
+  btn.onclick = (event) => {
+    event.stopPropagation();
+    dropdown.classList.toggle("open");
   };
+
+  document.addEventListener("click", () => {
+    dropdown.classList.remove("open");
+  });
 }
 
 function renderizarGraficoBarras(dados) {
