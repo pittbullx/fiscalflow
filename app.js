@@ -915,62 +915,85 @@ function renderizarDonutLegenda(top3, total) {
 
 
   async function carregarUltimasNotas() {
-    try {
-      const res = await fetch(`${N8N_HISTORICO_URL}?page=1&limit=3`);
-      const notas = await res.json();
-      const totalNotasEl = document.getElementById("totalNotas");
-      const totalItensEl = document.getElementById("itens");
+  try {
+    const res = await fetch(`${N8N_HISTORICO_URL}?page=1&limit=5`);
+    const notas = await res.json();
 
-      const lista = document.getElementById("transactionsList");
-      if (!lista) return;
+    const totalNotasEl = document.getElementById("totalNotas");
+    const totalItensEl = document.getElementById("itens");
+    const lista = document.getElementById("transactionsList");
 
-      lista.innerHTML = "";
+    if (!lista) return;
 
-      if (!Array.isArray(notas) || notas.length === 0) {
-        lista.innerHTML = `
-          <div class="transaction">
-            <div class="tx-icon green">🛒</div>
-            <div>
-              <div class="tx-title">Nenhuma nota lida</div>
-              <div class="tx-meta">Escaneie uma NFC-e</div>
-            </div>
-            <div class="tx-value">R$ 0,00</div>
-            <div class="tx-arrow">›</div>
-          </div>
-        `;
-        return;
-      }
+    lista.innerHTML = "";
 
-      notas.forEach(nota => {
-        if (Array.isArray(notas)) {
-          totalNotasEl.innerText = notas.length;
-
-          const totalItens = notas.reduce((soma, n) => {
-            return soma + (n.quantidade_itens || 0);
-          }, 0);
-
-          totalItensEl.innerText = totalItens;
-        }
-        const div = document.createElement("div");
-        div.className = "transaction";
-
-        div.innerHTML = `
-          <div class="tx-icon green">🛒</div>
-          <div>
-            <div class="tx-title">${nota.estabelecimento || "Estabelecimento não identificado"}</div>
-            <div class="tx-meta">${nota.data_compra || "-"} • ${nota.quantidade_itens || 0} itens</div>
-          </div>
-          <div class="tx-value">${moedaBR(nota.valor_total)}</div>
-          <div class="tx-arrow">›</div>
-        `;
-
-        lista.appendChild(div);
-      });
-
-    } catch (err) {
-      console.error("Erro últimas notas:", err);
+    if (!Array.isArray(notas) || notas.length === 0) {
+      lista.innerHTML = `
+        <div class="latest-note-empty">
+          Nenhuma nota registrada ainda.
+        </div>
+      `;
+      return;
     }
+
+    if (totalNotasEl) totalNotasEl.innerText = notas.length;
+
+    if (totalItensEl) {
+      const totalItens = notas.reduce((soma, n) => {
+        return soma + Number(n.quantidade_itens || 0);
+      }, 0);
+
+      totalItensEl.innerText = totalItens;
+    }
+
+    notas.slice(0, 5).forEach(nota => {
+      const div = document.createElement("div");
+      div.className = "latest-note-row";
+
+      div.innerHTML = `
+        <div class="latest-note-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M7 4h10v16H7z" />
+            <path d="M9 8h6" />
+            <path d="M9 12h6" />
+            <path d="M9 16h3" />
+          </svg>
+        </div>
+
+        <div class="latest-note-main">
+          <div class="latest-note-title">
+            ${nota.estabelecimento || "Estabelecimento não identificado"}
+          </div>
+          <div class="latest-note-meta">
+            ${formatarDataNota(nota.data_compra)} • ${nota.quantidade_itens || 0} itens
+          </div>
+        </div>
+
+        <div class="latest-note-value">
+          ${moedaBR(nota.valor_total)}
+        </div>
+
+        <div class="latest-note-arrow">›</div>
+      `;
+
+      lista.appendChild(div);
+    });
+
+  } catch (err) {
+    console.error("Erro últimas notas:", err);
   }
+}
+
+function formatarDataNota(data) {
+  if (!data) return "-";
+
+  if (data.includes("-")) {
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  return data;
+}
 
 function resetarTelaProcessamento() {
   const tabs = document.getElementById("postProcessTabs");

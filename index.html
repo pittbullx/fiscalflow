@@ -1614,6 +1614,121 @@
   text-align: right;
 }
 
+.latest-notes-card {
+  padding: 18px 16px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+
+.latest-notes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.latest-notes-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.latest-notes-sub {
+  margin-top: 4px;
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.latest-notes-link {
+  border: none;
+  background: transparent;
+  color: #38bdf8;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 0;
+}
+
+.latest-note-row {
+  display: grid;
+  grid-template-columns: 30px 1fr 76px 14px;
+  align-items: center;
+  gap: 10px;
+  min-height: 72px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(148,163,184,.10);
+}
+
+.latest-note-row:last-child {
+  border-bottom: none;
+}
+
+.latest-note-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  border: 1px solid rgba(56,189,248,.45);
+  background: rgba(37,150,255,.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+}
+
+.latest-note-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.latest-note-main {
+  min-width: 0;
+}
+
+.latest-note-title {
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: 850;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+}
+
+.latest-note-meta {
+  font-size: 10px;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.latest-note-value {
+  font-size: 10px;
+  font-weight: 900;
+  color: #38bdf8;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.latest-note-arrow {
+  color: #64748b;
+  font-size: 18px;
+  text-align: right;
+}
+
+.latest-note-empty {
+  padding: 18px 0 4px;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+
+
 
 
 
@@ -1725,23 +1840,24 @@
   <div id="topCategoriasList" class="top-categories-list"></div>
 </div>
 
+<div class="glass-card latest-notes-card">
+  <div class="latest-notes-header">
+    <div>
+      <div class="latest-notes-title">Últimas notas</div>
+      <div class="latest-notes-sub">As 5 despesas registradas mais recentes</div>
+    </div>
+
+    <button class="latest-notes-link" onclick="window.location.href='historico.html'">
+      Ver todas
+    </button>
+  </div>
+
+  <div id="transactionsList" class="latest-notes-list"></div>
+</div>
 
 
-      <div class="section-head">
-        <div class="section-title">Últimas notas</div>
-        <div class="link" onclick="window.location.href='historico.html'">Ver todas</div>
-      </div>
 
-      <div class="glass-card transactions-card" id="transactionsList">
-        <div class="transaction">
-          <div class="tx-icon green">🛒</div>
-          <div>
-            <div class="tx-title" id="estabelecimento">Nenhuma nota lida</div>
-            <div class="tx-meta detalhe-nota">Escaneie uma NFC-e</div>
-          </div>
-          <div class="tx-value" id="valor">R$ 0,00</div>
-          <div class="tx-arrow">›</div>
-        </div>
+
 
         <div class="transaction">
           <div class="tx-icon orange">🍴</div>
@@ -1998,6 +2114,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=3090"></script>
+  <script src="app.js?v=3095"></script>
 </body>
 </html>
