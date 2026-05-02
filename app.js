@@ -456,7 +456,7 @@ function percentual(valor, total) {
 let dashboardAtual = null;
 let mesSelecionado = null;
 let modoGrafico = "bar";
-let modoPeriodo = "12M";
+let modoPeriodo = "ANO";
 let dashboardCache = {};
 let mesesGrafico = [];
 
@@ -496,8 +496,19 @@ async function carregarDashboard() {
       };
     });
 
-    const ultimoMes = mesesGrafico[mesesGrafico.length - 1]?.mes;
-    aplicarDashboardPorMes(ultimoMes);
+    let mesParaUsar = mesSelecionado;
+
+    if (!mesParaUsar) {
+      const hoje = new Date();
+      mesParaUsar = hoje.toISOString().slice(0, 7);
+    }
+
+    // fallback se não existir no dataset
+    if (!dashboardCache[mesParaUsar]) {
+      mesParaUsar = mesesGrafico[mesesGrafico.length - 1]?.mes;
+    }
+
+    aplicarDashboardPorMes(mesParaUsar);
 
   } catch (err) {
     console.error("Erro dashboard:", err);
@@ -623,6 +634,15 @@ function montarSeletorPeriodo() {
 
   select.onchange = () => {
     modoPeriodo = select.value;
+
+    if (modoPeriodo === "12M") {
+      // 🔥 força mês atual
+      const hoje = new Date();
+      const mesAtual = hoje.toISOString().slice(0, 7);
+
+      mesSelecionado = mesAtual;
+    }
+
     carregarDashboard();
   };
 }
