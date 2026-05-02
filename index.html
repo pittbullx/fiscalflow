@@ -68,8 +68,8 @@
     }
 
     .brand-title {
-      font-size: 28px;
-      font-weight: 800;
+      font-size: 24px;
+      font-weight: 700;
       line-height: 1;
     }
 
@@ -853,15 +853,19 @@
       margin-bottom: 18px;
     }
 
-    .bar-chart {
-      height: 120px;
-      justify-content: space-around;
-      display: flex;              /* 🔥 em vez de grid */
-      justify-content: space-between;
-      align-items: flex-end;
+  .bar-chart {
+    position: relative;
+    height: 210px;
+    padding: 28px 0 22px 34px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 4px;
 
-      gap: 5px;                   /* controle fino aqui */
-    }
+    background-image:
+      linear-gradient(to bottom, rgba(148,163,184,.16) 1px, transparent 1px);
+    background-size: 100% 25%;
+  }
 
     .bar-item {
       display: flex;
@@ -1221,7 +1225,7 @@
     position: absolute;
     left: 0;
     top: 26px;
-    bottom: 58px;
+    bottom: 34px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1233,7 +1237,7 @@
   .bar-item {
     position: relative;
     flex: 1;
-    height: 100%;
+    height: calc(100% - 34px);
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -1625,6 +1629,6 @@
     </div>
   </nav>
 
-  <script src="app.js?v=1014"></script>
+  <script src="app.js?v=1015"></script>
 </body>
 </html>

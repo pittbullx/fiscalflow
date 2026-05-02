@@ -613,7 +613,8 @@ function renderizarGraficoBarras(dados) {
   const meses = dados.ultimos_6_meses || mesesGrafico || [];
   const maior = Math.max(...meses.map(m => Number(m.total || 0)), 1);
 
-  const escalaMax = Math.ceil(maior / 1000) * 1000;
+  const baseEscala = maior <= 500 ? 100 : maior <= 2000 ? 500 : maior <= 10000 ? 1000 : 5000;
+  const escalaMax = Math.ceil(maior / baseEscala) * baseEscala;
 
   chart.innerHTML = `
     <div class="y-axis-labels">
