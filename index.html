@@ -1856,6 +1856,46 @@
   stroke-linejoin: round;
 }
 
+.parcelamento-card {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(96,139,255,.22);
+  background: rgba(15,23,42,.62);
+}
+
+.parcelamento-title {
+  font-size: 15px;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.parcelamento-resumo {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(59,130,246,.12);
+  border: 1px solid rgba(96,139,255,.18);
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </style>
 
 </head>
@@ -2117,6 +2157,51 @@
     <option value="18 - Transferência (TED)">Transferência (TED)</option>
     <option value="99 - Criptomoeda">Criptomoeda</option>
   </select>
+  <div id="parcelamentoCard" class="parcelamento-card hidden">
+    <div class="parcelamento-title">Detalhes do cartão</div>
+
+    <label>Número de parcelas</label>
+    <select id="manualParcelas">
+      <option value="1">1x</option>
+      <option value="2">2x</option>
+      <option value="3">3x</option>
+      <option value="4">4x</option>
+      <option value="5">5x</option>
+      <option value="6">6x</option>
+      <option value="7">7x</option>
+      <option value="8">8x</option>
+      <option value="9">9x</option>
+      <option value="10">10x</option>
+      <option value="11">11x</option>
+      <option value="12">12x</option>
+    </select>
+
+    <label>Primeira parcela cai em</label>
+    <input 
+      id="manualPrimeiraParcela" 
+      type="text" 
+      inputmode="numeric"
+      maxlength="10"
+      placeholder="dd/mm/aaaa">
+
+    <div class="parcelamento-resumo" id="parcelamentoResumo">
+      Informe as parcelas para calcular o lançamento.
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     <label>Estabelecimento</label>
     <input id="manualEstabelecimento" type="text" placeholder="Ex: Supermercado Extra">
@@ -2250,6 +2335,6 @@
   </div>
 </nav>
 
-  <script src="app.js?v=3260"></script>
+  <script src="app.js?v=3265"></script>
 </body>
 </html>

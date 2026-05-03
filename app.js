@@ -108,6 +108,8 @@ function atualizarItem(index, campo, valor) {
 function calcularTotal() {
   const total = itensManuais.reduce((acc, item) => acc + item.valor, 0);
   manualTotal.innerText = "R$ " + total.toFixed(2);
+
+  atualizarResumoParcelamento();
 }
 
 function showScreen(screen) {
@@ -1141,6 +1143,12 @@ async function salvarDespesaManual() {
   if (actions) actions.style.display = "none";
   
   const formaPagamentoManual = document.getElementById("manualPagamento").value;
+  const ehCreditoManual = pagamentoEhCredito();
+  const parcelasManual = ehCreditoManual ? Number(manualParcelas?.value || 1) : 1;
+  const primeiraParcelaInput = ehCreditoManual ? manualPrimeiraParcela?.value : "";
+  const primeiraParcelaManual = ehCreditoManual
+    ? converterDataBRparaISO(primeiraParcelaInput)
+    : "";
   const estabelecimentoManual = document.getElementById("manualEstabelecimento").value.trim();
   const dataManualInput = document.getElementById("manualData").value;
   const dataManual = converterDataBRparaISO(dataManualInput);
@@ -1152,6 +1160,11 @@ async function salvarDespesaManual() {
     return;
   }
 
+  if (ehCreditoManual && (!parcelasManual || parcelasManual < 1 || !primeiraParcelaManual)) {
+    alert("Para cartão de crédito, informe as parcelas e a data da primeira parcela.");
+    return;
+  }
+
   const totalManual = itensValidos.reduce((acc, item) => acc + item.valor, 0);
 
   const payload = {
@@ -1160,6 +1173,8 @@ async function salvarDespesaManual() {
     data_compra: dataManual,
     valor_total: totalManual,
     forma_pagamento: formaPagamentoManual,
+    parcelas: parcelasManual,
+    primeira_parcela: primeiraParcelaManual || dataManual,
     quantidade_itens: itensValidos.length,
     itens: itensValidos.map(i => ({
       produto: i.nome,
@@ -1209,6 +1224,87 @@ async function salvarDespesaManual() {
   }
 }
 
+const manualPagamento = document.getElementById("manualPagamento");
+const parcelamentoCard = document.getElementById("parcelamentoCard");
+const manualParcelas = document.getElementById("manualParcelas");
+const manualPrimeiraParcela = document.getElementById("manualPrimeiraParcela");
+const parcelamentoResumo = document.getElementById("parcelamentoResumo");
+
+function pagamentoEhCredito() {
+  const forma = manualPagamento?.value || "";
+  return forma.toLowerCase().includes("crédito") || forma.toLowerCase().includes("credito");
+}
+
+function atualizarParcelamentoCard() {
+  if (!parcelamentoCard) return;
+
+  if (pagamentoEhCredito()) {
+    parcelamentoCard.classList.remove("hidden");
+
+    if (manualPrimeiraParcela && !manualPrimeiraParcela.value) {
+      manualPrimeiraParcela.value = document.getElementById("manualData")?.value || "";
+    }
+
+    atualizarResumoParcelamento();
+  } else {
+    parcelamentoCard.classList.add("hidden");
+
+    if (manualParcelas) manualParcelas.value = "1";
+    if (manualPrimeiraParcela) manualPrimeiraParcela.value = "";
+
+    atualizarResumoParcelamento();
+  }
+}
+
+function atualizarResumoParcelamento() {
+  if (!parcelamentoResumo) return;
+
+  const total = itensManuais.reduce((acc, item) => acc + item.valor, 0);
+  const parcelas = Number(manualParcelas?.value || 1);
+
+  if (!pagamentoEhCredito()) {
+    parcelamentoResumo.innerText = "Parcelamento disponível apenas para cartão de crédito.";
+    return;
+  }
+
+  if (!total || total <= 0) {
+    parcelamentoResumo.innerText = "Adicione os itens para calcular o valor das parcelas.";
+    return;
+  }
+
+  const valorParcela = total / parcelas;
+  const primeira = manualPrimeiraParcela?.value || "não informada";
+
+  parcelamentoResumo.innerText =
+    `Total ${moedaBR(total)} em ${parcelas}x de ${moedaBR(valorParcela)}. ` +
+    `Primeira parcela: ${primeira}.`;
+}
+
+if (manualPagamento) {
+  manualPagamento.addEventListener("change", atualizarParcelamentoCard);
+}
+
+if (manualParcelas) {
+  manualParcelas.addEventListener("change", atualizarResumoParcelamento);
+}
+
+if (manualPrimeiraParcela) {
+  manualPrimeiraParcela.addEventListener("input", () => {
+    let v = manualPrimeiraParcela.value.replace(/\D/g, "");
+
+    if (v.length > 2) v = v.slice(0, 2) + "/" + v.slice(2);
+    if (v.length > 5) v = v.slice(0, 5) + "/" + v.slice(5, 9);
+
+    manualPrimeiraParcela.value = v;
+    atualizarResumoParcelamento();
+  });
+}
+
+
+
+
+
+
 const manualDataInput = document.getElementById("manualData");
 
 if (manualDataInput) {
@@ -1239,6 +1335,7 @@ function limparFormularioManual() {
 carregarDashboard();
 carregarUltimasNotas();
 adicionarItem();
+atualizarParcelamentoCard();
 
 function atualizarEtapaProcessamento(etapa) {
   const steps = document.querySelectorAll(".step");
