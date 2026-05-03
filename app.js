@@ -2,6 +2,7 @@ const N8N_WEBHOOK_URL = "https://n8n.iflows.com.br/webhook/230c395b-070d-4e94-8c
 const N8N_PREVIEW_NFCE_URL = "https://n8n.iflows.com.br/webhook/preview-nfce";
 const N8N_DASHBOARD_URL = "https://n8n.iflows.com.br/webhook/dashboard";
 const N8N_HISTORICO_URL = "https://n8n.iflows.com.br/webhook/historico";
+const N8N_PREVIEW_XML_URL = "https://n8n.iflows.com.br/webhook-test/preview-xml";
 const tabScan = document.getElementById("tabScan");
 const tabManual = document.getElementById("tabManual");
 const tabOCR = document.getElementById("tabOCR");
@@ -259,15 +260,51 @@ ocrFileInput?.addEventListener("change", () => {
   alert("Imagem selecionada. Próximo passo: enviar para o fluxo OCR no n8n.");
 });
 
-xmlFileInput?.addEventListener("change", () => {
+xmlFileInput?.addEventListener("change", async () => {
   if (!xmlFileInput.files.length) return;
 
-  resetarTelaProcessamento();
-  fluxoStatus.innerText = "Processando XML...";
-  showScreen(processingScreen);
-  atualizarEtapaProcessamento(1);
+  const file = xmlFileInput.files[0];
 
-  alert("XML selecionado. Próximo passo: enviar para o fluxo XML no n8n.");
+  try {
+    resetarTelaProcessamento();
+    fluxoStatus.innerText = "Lendo XML...";
+    showScreen(processingScreen);
+    atualizarEtapaProcessamento(1);
+
+    const xmlText = await file.text();
+
+    fluxoStatus.innerText = "Enviando XML...";
+    atualizarEtapaProcessamento(2);
+
+    const response = await fetch(N8N_PREVIEW_XML_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/xml"
+      },
+      body: xmlText
+    });
+
+    const text = await response.text();
+    const data = JSON.parse(text);
+    const nota = Array.isArray(data) ? data[0] : data;
+
+    if (nota.status === "preview") {
+      mostrarConfirmacaoNfce(nota);
+    } else {
+      alert("XML processado, mas o retorno não veio como preview.");
+      console.log(nota);
+    }
+
+  } catch (error) {
+    console.error("Erro ao processar XML:", error);
+    fluxoStatus.innerText = "Erro ao processar XML";
+    document.querySelector(".processing-sub").innerText =
+      "Não foi possível ler o XML.";
+
+    mostrarAcoesPosProcessamento();
+  } finally {
+    xmlFileInput.value = "";
+  }
 });
 console.log("Fiscal Flow app.js carregado corretamente");
 
