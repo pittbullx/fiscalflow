@@ -1,5 +1,5 @@
-const N8N_WEBHOOK_URL = "https://n8n.iflows.com.br/webhook-test/230c395b-070d-4e94-8cbc-ea207a01b58d";
-const N8N_PREVIEW_NFCE_URL = "https://n8n.iflows.com.br/webhook-test/preview-nfce";
+const N8N_WEBHOOK_URL = "https://n8n.iflows.com.br/webhook/nfce";
+const N8N_PREVIEW_NFCE_URL = "https://n8n.iflows.com.br/webhook/preview-nfce";
 const N8N_DASHBOARD_URL = "https://n8n.iflows.com.br/webhook/dashboard";
 const N8N_HISTORICO_URL = "https://n8n.iflows.com.br/webhook/historico";
 const tabScan = document.getElementById("tabScan");
