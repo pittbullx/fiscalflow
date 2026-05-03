@@ -1283,11 +1283,8 @@ async function confirmarNfce() {
 
     const nota = Array.isArray(data) ? data[0] : data;
 
-    mostrarResultado({
-      estabelecimento: nota.estabelecimento || payload.estabelecimento,
-      valor_total: nota.valor_total || payload.valor_total,
-      quantidade_itens: nota.quantidade_itens || payload.quantidade_itens
-    });
+    alert("Despesa salva com sucesso!");
+    location.reload();
 
   } catch (error) {
     console.error("Erro ao confirmar NFC-e:", error);
