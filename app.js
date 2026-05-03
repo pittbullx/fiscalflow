@@ -1116,14 +1116,20 @@ function resetarTelaProcessamento() {
   fluxoStatus.innerText = "Concluído";
   atualizarEtapaProcessamento(3);
 
-  estabelecimento.innerText =
-    nota?.estabelecimento || "Estabelecimento não identificado";
+  if (estabelecimento) {
+    estabelecimento.innerText =
+      nota?.estabelecimento || "Estabelecimento não identificado";
+  }
 
-  valor.innerText =
-    nota?.valor_total != null ? "R$ " + nota.valor_total : "R$ 0,00";
+  if (valor) {
+    valor.innerText =
+      nota?.valor_total != null ? moedaBR(nota.valor_total) : "R$ 0,00";
+  }
 
-  itensEl.innerText =
-    nota?.quantidade_itens != null ? nota.quantidade_itens : 0;
+  if (itensEl) {
+    itensEl.innerText =
+      nota?.quantidade_itens != null ? nota.quantidade_itens : 0;
+  }
 
   dashboardCache = {};
   carregarDashboard();
