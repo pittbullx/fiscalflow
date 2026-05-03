@@ -2237,6 +2237,69 @@
 </div>
 
 </section>
+
+<!-- 🔥 NOVA TELA NFC-e -->
+<section id="confirmarNfceScreen" class="screen">
+
+  <div class="scan-header">
+    <button class="icon-btn" id="btnCancelarNfce">‹</button>
+    <div class="screen-title">Confirmar despesa</div>
+    <div style="width:58px"></div>
+  </div>
+
+  <div class="manual-card">
+
+    <label>Estabelecimento</label>
+    <div id="nfceEstabelecimento">-</div>
+
+    <label>Data</label>
+    <div id="nfceData">-</div>
+
+    <label>Total</label>
+    <div id="nfceTotal">R$ 0,00</div>
+
+    <label>Forma de pagamento</label>
+    <select id="nfcePagamento">
+      <option value="01 - Dinheiro">Dinheiro</option>
+      <option value="02 - Cartão de Débito">Cartão de Débito</option>
+      <option value="03 - Cartão de Crédito">Cartão de Crédito</option>
+      <option value="17 - PIX">Pix</option>
+    </select>
+
+    <!-- 🔥 PARCELAMENTO -->
+    <div id="nfceParcelamentoCard" class="parcelamento-card hidden">
+
+      <label>Parcelas</label>
+      <select id="nfceParcelas">
+        <option value="1">1x</option>
+        <option value="2">2x</option>
+        <option value="3">3x</option>
+        <option value="4">4x</option>
+        <option value="5">5x</option>
+        <option value="6">6x</option>
+        <option value="12">12x</option>
+      </select>
+
+      <label>Primeira parcela</label>
+      <input id="nfcePrimeiraParcela" placeholder="dd/mm/aaaa">
+
+    </div>
+
+    <div id="nfceItens"></div>
+
+    <button class="manual-save-btn" id="btnConfirmarNfce">
+      Confirmar
+    </button>
+
+  </div>
+
+</section>
+
+
+
+
+
+
     <section id="processingScreen" class="screen">
       <div class="scan-header">
         <button class="icon-btn" id="backFromProcessingBtn" type="button">‹</button>
@@ -2335,6 +2398,6 @@
   </div>
 </nav>
 
-  <script src="app.js?v=3265"></script>
+  <script src="app.js?v=3270"></script>
 </body>
 </html>

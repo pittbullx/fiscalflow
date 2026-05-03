@@ -1,4 +1,5 @@
 const N8N_WEBHOOK_URL = "https://n8n.iflows.com.br/webhook-test/230c395b-070d-4e94-8cbc-ea207a01b58d";
+const N8N_PREVIEW_NFCE_URL = "https://n8n.iflows.com.br/webhook-test/preview-nfce";
 const N8N_DASHBOARD_URL = "https://n8n.iflows.com.br/webhook/dashboard";
 const N8N_HISTORICO_URL = "https://n8n.iflows.com.br/webhook/historico";
 const tabScan = document.getElementById("tabScan");
@@ -17,10 +18,12 @@ const addItemBtn = document.getElementById("addItemBtn");
 const manualTotal = document.getElementById("manualTotal");
 
 let itensManuais = [];
+let nfcePreviewData = null;
 
 // Screens
 const homeScreen = document.getElementById("homeScreen");
 const scanScreen = document.getElementById("scanScreen");
+const confirmarNfceScreen = document.getElementById("confirmarNfceScreen");
 const processingScreen = document.getElementById("processingScreen");
 
 // Buttons
@@ -115,6 +118,7 @@ function calcularTotal() {
 function showScreen(screen) {
   homeScreen.classList.remove("active");
   scanScreen.classList.remove("active");
+  confirmarNfceScreen.classList.remove("active");
   processingScreen.classList.remove("active");
 
   screen.classList.add("active");
@@ -415,7 +419,7 @@ async function enviarParaN8N() {
   const urlNfce = normalizeNfceUrl(qrResult.value);
 
   try {
-    const response = await fetch(N8N_WEBHOOK_URL, {
+    const response = await fetch(N8N_PREVIEW_NFCE_URL, {
       method: "POST",
       headers: {
         "Content-Type": "text/plain"
@@ -432,7 +436,11 @@ async function enviarParaN8N() {
     const data = JSON.parse(text);
     const nota = Array.isArray(data) ? data[0] : data;
 
-    mostrarResultado(nota);
+    if (nota.status === "preview") {
+      mostrarConfirmacaoNfce(nota);
+    } else {
+      mostrarResultado(nota);
+    }
 
   } catch (err) {
     console.error(err);
@@ -1123,6 +1131,171 @@ function resetarTelaProcessamento() {
   limparFormularioManual();
   mostrarAcoesPosProcessamento();
 }
+
+function mostrarConfirmacaoNfce(nota) {
+  nfcePreviewData = nota;
+
+  document.getElementById("nfceEstabelecimento").innerText =
+    nota.estabelecimento || "Estabelecimento não identificado";
+
+  document.getElementById("nfceData").innerText =
+    nota.data_compra || "-";
+
+  document.getElementById("nfceTotal").innerText =
+    moedaBR(nota.valor_total || 0);
+
+  const pagamento = document.getElementById("nfcePagamento");
+  pagamento.value = nota.forma_pagamento_detectada || "17 - PIX";
+
+  renderizarItensConfirmacaoNfce(nota.itens || []);
+  atualizarParcelamentoNfce();
+
+  showScreen(confirmarNfceScreen);
+}
+
+function renderizarItensConfirmacaoNfce(itens) {
+  const lista = document.getElementById("nfceItens");
+  if (!lista) return;
+
+  lista.innerHTML = "";
+
+  itens.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "item-row";
+
+    div.innerHTML = `
+      <input value="${item.produto || ""}" readonly>
+      <input value="${moedaBR(item.valor_total || 0)}" readonly>
+      <select disabled>
+        <option>${item.categoria || "Outros"}</option>
+      </select>
+    `;
+
+    lista.appendChild(div);
+  });
+}
+
+function pagamentoNfceEhCredito() {
+  const forma = document.getElementById("nfcePagamento")?.value || "";
+  return forma.toLowerCase().includes("crédito") || forma.toLowerCase().includes("credito");
+}
+
+function atualizarParcelamentoNfce() {
+  const card = document.getElementById("nfceParcelamentoCard");
+  if (!card) return;
+
+  if (pagamentoNfceEhCredito()) {
+    card.classList.remove("hidden");
+  } else {
+    card.classList.add("hidden");
+    document.getElementById("nfceParcelas").value = "1";
+    document.getElementById("nfcePrimeiraParcela").value = "";
+  }
+}
+
+document.getElementById("nfcePagamento")?.addEventListener("change", atualizarParcelamentoNfce);
+
+document.getElementById("nfcePrimeiraParcela")?.addEventListener("input", () => {
+  const input = document.getElementById("nfcePrimeiraParcela");
+  let v = input.value.replace(/\D/g, "");
+
+  if (v.length > 2) v = v.slice(0, 2) + "/" + v.slice(2);
+  if (v.length > 5) v = v.slice(0, 5) + "/" + v.slice(5, 9);
+
+  input.value = v;
+});
+
+document.getElementById("btnCancelarNfce")?.addEventListener("click", () => {
+  nfcePreviewData = null;
+  showScreen(scanScreen);
+  ativarScan();
+});
+
+document.getElementById("btnConfirmarNfce")?.addEventListener("click", confirmarNfce);
+
+async function confirmarNfce() {
+  if (!nfcePreviewData) {
+    alert("Nenhuma NFC-e carregada para confirmar.");
+    return;
+  }
+
+  const formaPagamento = document.getElementById("nfcePagamento").value;
+  const ehCredito = pagamentoNfceEhCredito();
+
+  const parcelas = ehCredito
+    ? Number(document.getElementById("nfceParcelas").value || 1)
+    : 1;
+
+  const primeiraParcelaInput = document.getElementById("nfcePrimeiraParcela").value;
+  const primeiraParcela = ehCredito
+    ? converterDataBRparaISO(primeiraParcelaInput)
+    : String(nfcePreviewData.data_compra || "").slice(0, 10);
+
+  if (ehCredito && !primeiraParcela) {
+    alert("Informe a data da primeira parcela.");
+    return;
+  }
+
+  const payload = {
+    origem: "nfce_qrcode",
+    data_captura: nfcePreviewData.data_captura,
+    data_compra: String(nfcePreviewData.data_compra || "").slice(0, 10),
+    url_nfce: nfcePreviewData.url_nfce,
+    url_original: nfcePreviewData.url_original,
+    chave_nfce: nfcePreviewData.chave_nfce,
+    estabelecimento: nfcePreviewData.estabelecimento,
+    cnpj: nfcePreviewData.cnpj,
+    valor_total: nfcePreviewData.valor_total,
+    forma_pagamento: formaPagamento,
+    parcelas: parcelas,
+    primeira_parcela: primeiraParcela,
+    quantidade_itens: nfcePreviewData.quantidade_itens,
+    itens: nfcePreviewData.itens || []
+  };
+
+  resetarTelaProcessamento();
+  fluxoStatus.innerText = "Salvando despesa...";
+  showScreen(processingScreen);
+
+  try {
+    const response = await fetch(N8N_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const text = await response.text();
+    let data;
+
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = payload;
+    }
+
+    const nota = Array.isArray(data) ? data[0] : data;
+
+    mostrarResultado({
+      estabelecimento: nota.estabelecimento || payload.estabelecimento,
+      valor_total: nota.valor_total || payload.valor_total,
+      quantidade_itens: nota.quantidade_itens || payload.quantidade_itens
+    });
+
+  } catch (error) {
+    console.error("Erro ao confirmar NFC-e:", error);
+    fluxoStatus.innerText = "Erro ao salvar NFC-e";
+    document.querySelector(".processing-sub").innerText =
+      "Não foi possível registrar a despesa";
+
+    mostrarAcoesPosProcessamento();
+  }
+}
+
+
+
+
 
 function converterDataBRparaISO(dataBR) {
   if (!dataBR) return "";
