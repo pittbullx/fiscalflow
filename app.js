@@ -1176,6 +1176,12 @@ function resetarTelaProcessamento() {
 }
 
 function mostrarConfirmacaoNfce(nota) {
+    if (!nota.itens || !Array.isArray(nota.itens) || nota.itens.length === 0) {
+    alert("Não foi possível extrair os itens dessa NFC-e. Tente escanear novamente ou lançar manualmente.");
+    showScreen(scanScreen);
+    return;
+  }
+ 
   nfcePreviewData = nota;
 
   document.getElementById("nfceEstabelecimento").innerText =
@@ -1262,6 +1268,12 @@ async function confirmarNfce() {
     return;
   }
 
+  if (!nfcePreviewData.itens || !Array.isArray(nfcePreviewData.itens) || nfcePreviewData.itens.length === 0) {
+    alert("Essa NFC-e está sem itens. Não vou salvar uma nota incompleta.");
+    return;
+  }
+
+
   const formaPagamento = document.getElementById("nfcePagamento").value;
   const ehCredito = pagamentoNfceEhCredito();
 
@@ -1292,8 +1304,8 @@ async function confirmarNfce() {
     forma_pagamento: formaPagamento,
     parcelas: parcelas,
     primeira_parcela: primeiraParcela,
-    quantidade_itens: nfcePreviewData.quantidade_itens,
-    itens: nfcePreviewData.itens || []
+    quantidade_itens: nfcePreviewData.itens.length,
+    itens: nfcePreviewData.itens
   };
 
   resetarTelaProcessamento();
