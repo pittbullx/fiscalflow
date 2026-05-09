@@ -183,7 +183,7 @@ function aplicarEstadoLogin(user) {
     
 
     if (bottomNav) bottomNav.style.display = "none";
-    showScreen(homeScreen);
+    showScreen(loginScreen);
   }
 }
 
