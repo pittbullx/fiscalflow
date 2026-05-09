@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Histórico de Notas</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, #101b3a 0%, #050914 48%, #030712 100%);
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    .app {
+      min-height: 100vh;
+      max-width: 430px;
+      margin: 0 auto;
+      padding: 22px 18px 32px;
+    }
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 0 16px;
+  margin-bottom: 18px;
+  background: transparent;
+  backdrop-filter: blur(12px);
+}
+
+    .back-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(145deg, #18234b, #101832);
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+    }
+
+    .title-wrap {
+      flex: 1;
+    }
+
+    .page-title {
+      font-size: 25px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .page-sub {
+      color: #b8c1d9;
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 24px;
+      color: #cbd5e1;
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(18,30,65,.92), rgba(6,13,31,.95));
+      border: 1px solid rgba(96,139,255,.22);
+      border-radius: 22px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 16px 36px rgba(0,0,0,.32), inset 0 0 28px rgba(59,130,246,.06);
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+
+    .card-meta {
+      color: #aeb8d2;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .valor {
+      font-size: 20px;
+      font-weight: 900;
+      color: #63f58d;
+    }
+
+    .pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(59,130,246,.18);
+      color: #93c5fd;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .empty {
+      text-align: center;
+      color: #cbd5e1;
+      padding: 32px 12px;
+    }
+    .load-more {
+      width: 100%;
+      margin: 18px 0 28px;
+      padding: 15px;
+      border-radius: 18px;
+      border: 1px solid rgba(96,139,255,.35);
+      background: linear-gradient(145deg, #1d4ed8, #172554);
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      box-shadow: 0 12px 28px rgba(0,0,0,.28);
+      cursor: pointer;
+    }
+
+
+
+
+
+
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <div class="top">
+      <button class="back-btn" onclick="window.location.href='index.html?screen=home'" type="button">‹</button>
+
+      <div class="title-wrap">
+        <div class="page-title">🧾 Histórico</div>
+        <div class="page-sub">Notas fiscais registradas</div>
+      </div>
+    </div>
+
+    <div id="lista">
+      <div class="loading">Carregando...</div>
+    </div>
+
+  </div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDI-hUgRA6uoE5BgHrqJlZ-TI7LAUQU978",
+    authDomain: "fiscalflow-be7b3.firebaseapp.com",
+    projectId: "fiscalflow-be7b3",
+    appId: "1:400166177729:web:411369dc498dfbf9833d40"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+
+
+
+
+
+
+
+  <script>
+    const URL_HISTORICO = "https://n8n.iflows.com.br/webhook/historico";
+    let paginaAtual = 1;
+    const limitePorPagina = 20;
+    function moedaBR(valor) {
+      return Number(valor || 0).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    }
+
+    function formatarDataBR(data) {
+      if (!data) return "-";
+
+      const partes = String(data).split("-");
+      if (partes.length < 3) return data;
+
+      const ano = partes[0];
+      const mes = partes[1];
+      const dia = partes[2].substring(0, 2);
+
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    async function carregarHistorico() {
+      const lista = document.getElementById("lista");
+
+      try {
+        const params = new URLSearchParams({
+          page: String(paginaAtual),
+          limit: String(limitePorPagina),
+          usuario_id: window.usuarioAtual?.uid || "",
+          usuario_email: window.usuarioAtual?.email || ""
+        });
+
+        const response = await fetch(`${URL_HISTORICO}?${params.toString()}`);
+        const dados = await response.json();
+
+        if (paginaAtual === 1) {
+          lista.innerHTML = "";
+        }
+
+        if (!Array.isArray(dados) || dados.length === 0) {
+          lista.innerHTML = `<div class="empty">Nenhuma nota encontrada</div>`;
+          return;
+        }
+
+        dados.forEach(nota => {
+          const div = document.createElement("div");
+          div.className = "card";
+
+          div.innerHTML = `
+            <div class="card-title">${nota.estabelecimento || "Estabelecimento não identificado"}</div>
+
+            <div class="card-meta">
+              ${formatarDataBR(nota.data_compra)} • ${nota.quantidade_itens || 0} itens
+            </div>
+
+            <div class="card-footer">
+              <div class="valor">${moedaBR(nota.valor_total)}</div>
+              <div class="pill">NFC-e</div>
+            </div>
+          `;
+
+          lista.appendChild(div);
+        });
+        if (dados.length === limitePorPagina) {
+          const btn = document.createElement("button");
+          btn.innerText = "Carregar mais";
+          btn.className = "load-more";
+
+          btn.onclick = () => {
+            btn.remove();
+            paginaAtual++;
+            firebase.auth().onAuthStateChanged(user => {
+            if (!user) {
+              window.location.href = "index.html";
+              return;
+            }
+
+            window.usuarioAtual = user;
+            carregarHistorico();
+          });
+          };
+
+          lista.appendChild(btn);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar histórico:", error);
+        lista.innerHTML = `<div class="empty">Erro ao carregar histórico</div>`;
+      }
+    }
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      window.usuarioAtual = user;
+
+      carregarHistorico();
+    });
+  </script>
+</body>
+</html>

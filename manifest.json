@@ -1,10 +1,10 @@
 {
   "name": "Fiscal Flow",
   "short_name": "FiscalFlow",
-  "start_url": "/?v=9003",
+  "start_url": "/?v=3400",
   "display": "standalone",
-  "background_color": "#2563eb",
-  "theme_color": "#2563eb",
+  "background_color": "#020b2d",
+  "theme_color": "#020b2d",
   "icons": [
     {
       "src": "Icone.png",

@@ -2,7 +2,40 @@ const N8N_WEBHOOK_URL = "https://n8n.iflows.com.br/webhook/230c395b-070d-4e94-8c
 const N8N_PREVIEW_NFCE_URL = "https://n8n.iflows.com.br/webhook/preview-nfce";
 const N8N_DASHBOARD_URL = "https://n8n.iflows.com.br/webhook/dashboard";
 const N8N_HISTORICO_URL = "https://n8n.iflows.com.br/webhook/historico";
+
+const loginScreen = document.getElementById("loginScreen");
+
+
+const loginGoogleBtn = document.getElementById("loginGoogleBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const bottomNav = document.getElementById("bottomNav");
+
+const auth = firebase.auth();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+if (bottomNav) {
+  bottomNav.style.display = "none";
+}
+
+if (loginGoogleBtn) {
+  loginGoogleBtn.addEventListener("click", async () => {
+    
+    try {
+      await auth.signInWithPopup(googleProvider);
+    } catch (err) {
+      console.error("Erro no login Google:", err);
+      alert("Erro no login Google: " + err.message);
+    }
+  });
+}
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    await auth.signOut();
+  });
+}
 const N8N_PREVIEW_XML_URL = "https://n8n.iflows.com.br/webhook/preview-xml";
+const N8N_PREVIEW_VOZ_URL = "https://n8n.iflows.com.br/webhook/preview-voz";
 const tabScan = document.getElementById("tabScan");
 const tabManual = document.getElementById("tabManual");
 const tabOCR = document.getElementById("tabOCR");
@@ -17,6 +50,13 @@ const salvarManualBtn = document.getElementById("salvarManualBtn");
 const itensContainer = document.getElementById("itensContainer");
 const addItemBtn = document.getElementById("addItemBtn");
 const manualTotal = document.getElementById("manualTotal");
+const tabVoz = document.getElementById("tabVoz");
+const vozMode = document.getElementById("vozMode");
+const btnIniciarVoz = document.getElementById("btnIniciarVoz");
+const btnUsarTextoVoz = document.getElementById("btnUsarTextoVoz");
+const vozTexto = document.getElementById("vozTexto");
+
+let textoCapturadoVoz = "";
 
 let itensManuais = [];
 let nfcePreviewData = null;
@@ -60,28 +100,29 @@ function adicionarItem() {
   const div = document.createElement("div");
   div.className = "item-row";
 
-  div.innerHTML = `
-    <input placeholder="Produto"
-      oninput="atualizarItem(${index}, 'nome', this.value)">
+div.innerHTML = `
+  <input class="manual-produto" placeholder="Produto"
+    oninput="atualizarItem(${index}, 'nome', this.value)">
 
-    <input type="number" placeholder="Valor" step="0.01"
-      oninput="atualizarItem(${index}, 'valor', this.value)">
+  <select class="manual-categoria" onchange="atualizarItem(${index}, 'categoria', this.value)">
+    <option value="Alimentação">Alimentação</option>
+    <option value="Casa">Casa</option>
+    <option value="Transporte">Transporte</option>
+    <option value="Saúde">Saúde</option>
+    <option value="Limpeza">Limpeza</option>
+    <option value="Vestuário">Vestuário</option>
+    <option value="Educação">Educação</option>
+    <option value="Lazer">Lazer</option>
+    <option value="Comunicação">Comunicação</option>
+    <option value="Detecção IA">Detecção IA</option>
+    <option value="Outros" selected>Outros</option>
+  </select>
 
-    <select onchange="atualizarItem(${index}, 'categoria', this.value)">
-      <option value="Alimentação">Alimentação</option>
-      <option value="Casa">Casa</option>
-      <option value="Transporte">Transporte</option>
-      <option value="Saúde">Saúde</option>
-      <option value="Limpeza">Limpeza</option>
-      <option value="Vestuário">Vestuário</option>
-      <option value="Educação">Educação</option>
-      <option value="Lazer">Lazer</option>
-      <option value="Comunicação">Comunicação</option>
-      <option value="Outros" selected>Outros</option>
-    </select>
+  <input class="manual-valor" type="number" placeholder="Valor" step="0.01"
+    oninput="atualizarItem(${index}, 'valor', this.value)">
 
-    <button onclick="removerItem(${index})" class="remove-btn">✕</button>
-  `;
+  <button onclick="removerItem(${index})" class="remove-btn">✕</button>
+`;
 
   itensContainer.appendChild(div);
 }
@@ -117,6 +158,8 @@ function calcularTotal() {
 }
 
 function showScreen(screen) {
+  
+  if (loginScreen) loginScreen.classList.remove("active");
   homeScreen.classList.remove("active");
   scanScreen.classList.remove("active");
   confirmarNfceScreen.classList.remove("active");
@@ -124,6 +167,29 @@ function showScreen(screen) {
 
   screen.classList.add("active");
 }
+function aplicarEstadoLogin(user) {
+  usuarioAtual = user;
+
+  if (user) {
+    
+
+    if (bottomNav) bottomNav.style.display = "grid";
+
+    showScreen(homeScreen);
+
+    carregarDashboard();
+    carregarUltimasNotas();
+  } else {
+    
+
+    if (bottomNav) bottomNav.style.display = "none";
+    showScreen(loginScreen);
+  }
+}
+
+
+
+auth.onAuthStateChanged(aplicarEstadoLogin);
 
 if (openScanCard) {
   openScanCard.addEventListener("click", startScan);
@@ -164,7 +230,8 @@ function limparAbasImportacao() {
   if (tabOCR) tabOCR.classList.remove("active");
   if (tabXML) tabXML.classList.remove("active");
   if (tabManual) tabManual.classList.remove("active");
-
+  if (tabVoz) tabVoz.classList.remove("active");
+  if (vozMode) vozMode.classList.add("hidden");
   if (scanMode) scanMode.classList.add("hidden");
   if (ocrMode) ocrMode.classList.add("hidden");
   if (xmlMode) xmlMode.classList.add("hidden");
@@ -204,6 +271,17 @@ function ativarXML(event) {
   stopCamera();
 }
 
+function ativarVoz(event) {
+  if (event) event.preventDefault();
+
+  limparAbasImportacao();
+
+  if (tabVoz) tabVoz.classList.add("active");
+  if (vozMode) vozMode.classList.remove("hidden");
+
+  stopCamera();
+}
+
 function ativarManual(event) {
   if (event) event.preventDefault();
 
@@ -225,6 +303,10 @@ if (tabOCR) {
 
 if (tabXML) {
   tabXML.addEventListener("pointerdown", ativarXML);
+}
+
+if (tabVoz) {
+  tabVoz.addEventListener("pointerdown", ativarVoz);
 }
 
 if (tabManual) {
@@ -462,6 +544,9 @@ async function enviarParaN8N() {
         "Content-Type": "text/plain"
       },
       body: JSON.stringify({
+        usuario_id: usuarioAtual?.uid,
+        usuario_nome: usuarioAtual?.displayName,
+        usuario_email: usuarioAtual?.email,
         data_captura: new Date().toISOString(),
         url_nfce: urlNfce,
         url_original: qrResult.value,
@@ -507,17 +592,125 @@ let modoPeriodo = "ANO";
 let dashboardCache = {};
 let mesesGrafico = [];
 
+function iniciarReconhecimentoVoz() {
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("Reconhecimento de voz não suportado neste navegador.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "pt-BR";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  if (vozTexto) {
+    vozTexto.innerText = "Ouvindo... fale agora.";
+  }
+
+  recognition.start();
+
+  recognition.onresult = (event) => {
+    textoCapturadoVoz = event.results[0][0].transcript;
+
+    if (vozTexto) {
+      vozTexto.innerText = textoCapturadoVoz;
+    }
+  };
+
+  recognition.onerror = (event) => {
+    console.error("Erro voz:", event.error);
+
+    if (vozTexto) {
+      vozTexto.innerText = "Erro ao ouvir. Tente novamente.";
+    }
+  };
+
+  recognition.onend = () => {
+    console.log("Reconhecimento de voz finalizado.");
+  };
+}
+
+if (btnIniciarVoz) {
+  btnIniciarVoz.addEventListener("click", iniciarReconhecimentoVoz);
+}
+
+if (btnUsarTextoVoz) {
+  btnUsarTextoVoz.addEventListener("click", enviarTextoVozParaPreview);
+}
+
+async function enviarTextoVozParaPreview() {
+  if (!textoCapturadoVoz) {
+    alert("Fale uma despesa primeiro.");
+    return;
+  }
+
+  resetarTelaProcessamento();
+  fluxoStatus.innerText = "Interpretando voz...";
+  showScreen(processingScreen);
+  atualizarEtapaProcessamento(1);
+
+  try {
+    const response = await fetch(N8N_PREVIEW_VOZ_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        origem: "voz",
+        texto: textoCapturadoVoz,
+        data_captura: new Date().toISOString()
+      })
+    });
+
+    const text = await response.text();
+    const data = JSON.parse(text);
+    const nota = Array.isArray(data) ? data[0] : data;
+
+    if (nota.status === "preview") {
+      mostrarConfirmacaoNfce(nota);
+    } else {
+      alert("A voz foi interpretada, mas não retornou como preview.");
+      console.log(nota);
+    }
+
+  } catch (error) {
+    console.error("Erro ao processar voz:", error);
+    fluxoStatus.innerText = "Erro ao interpretar voz";
+    document.querySelector(".processing-sub").innerText =
+      "Não foi possível interpretar a despesa por voz.";
+
+    mostrarAcoesPosProcessamento();
+  }
+}
+
+
+
 async function carregarDashboard() {
   try {
-    const res = await fetch(N8N_DASHBOARD_URL);
+    const params = new URLSearchParams({
+    usuario_id: usuarioAtual?.uid || "",
+    usuario_email: usuarioAtual?.email || ""
+  });
+
+  const res = await fetch(`${N8N_DASHBOARD_URL}?${params.toString()}`);
     const dados = await res.json();
 
     let lista = dados;
 
   if (modoPeriodo === "ANO") {
+
     const anoAtual = new Date().getFullYear();
 
     lista = gerarAnoCompleto(anoAtual, dados);
+
+  } else {
+
+    lista = gerarUltimos12Meses(dados);
+
   }
 
   mesesGrafico = lista.map(m => ({
@@ -625,49 +818,6 @@ function nomeMesCompleto(yyyyMM) {
   return meses[mesIndex] || "-";
 }
 
-
-
-
-
-function aplicarDashboard(dados) {
-  dashboardAtual = dados;
-  mesSelecionado = dados.mes_selecionado;
-
-  if (!mesesFixosGrafico.length) {
-    mesesFixosGrafico = dados.ultimos_6_meses || [];
-  }
-
-  dados.ultimos_6_meses = mesesFixosGrafico;
-
-  document.getElementById("homeTotal").innerText =
-    moedaBR(dados.total_mes || 0);
-
-  montarSeletorPeriodo(mesesFixosGrafico);
-  renderizarGraficoBarras(dados);
-  renderizarTopCategorias(dados);
-  precarregarMesesDashboard();
-}
-
-async function precarregarMesesDashboard() {
-  const meses = mesesFixosGrafico || [];
-
-  for (const m of meses) {
-    if (!m.mes) continue;
-    if (dashboardCache[m.mes]) continue;
-
-    try {
-      const url = `${N8N_DASHBOARD_URL}?mes=${m.mes}-01`;
-      const res = await fetch(url);
-      const dados = await res.json();
-
-      dashboardCache[m.mes] = dados;
-    } catch (err) {
-      console.warn("Erro ao pré-carregar mês:", m.mes, err);
-    }
-  }
-}
-
-
 function gerarAnoCompleto(ano, dados) {
   const meses = [];
 
@@ -686,22 +836,26 @@ function gerarAnoCompleto(ano, dados) {
 
   return meses;
 }
-function aplicarDashboard(dados) {
-  dashboardAtual = dados;
-  mesSelecionado = dados.mes_selecionado;
 
-  if (!mesesFixosGrafico.length) {
-    mesesFixosGrafico = dados.ultimos_6_meses || [];
+function gerarUltimos12Meses(dados) {
+  const meses = [];
+  const hoje = new Date();
+
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+    const mesStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+
+    const existente = dados.find(item => item.mes === mesStr);
+
+    meses.push({
+      mes: mesStr,
+      total: existente ? Number(existente.total || 0) : 0,
+      quantidade: existente ? Number(existente.quantidade || 0) : 0,
+      categorias: existente ? (existente.categorias || {}) : {}
+    });
   }
 
-  dados.ultimos_6_meses = mesesFixosGrafico;
-
-  document.getElementById("homeTotal").innerText =
-    moedaBR(dados.total_mes || 0);
-
-  montarSeletorPeriodo(mesesFixosGrafico);
-  renderizarGraficoBarras(dados);
-  renderizarCategoriasTop3(dados);
+  return meses;
 }
 
 function montarSeletorPeriodo() {
@@ -1047,7 +1201,14 @@ function renderizarDonutLegenda(top3, total) {
 
   async function carregarUltimasNotas() {
   try {
-    const res = await fetch(`${N8N_HISTORICO_URL}?page=1&limit=5`);
+    const params = new URLSearchParams({
+      page: "1",
+      limit: "5",
+      usuario_id: usuarioAtual?.uid || "",
+      usuario_email: usuarioAtual?.email || ""
+    });
+
+    const res = await fetch(`${N8N_HISTORICO_URL}?${params.toString()}`);
     const notas = await res.json();
 
     const totalNotasEl = document.getElementById("totalNotas");
@@ -1194,7 +1355,12 @@ function mostrarConfirmacaoNfce(nota) {
     moedaBR(nota.valor_total || 0);
 
   const pagamento = document.getElementById("nfcePagamento");
-  pagamento.value = nota.forma_pagamento_detectada || "17 - PIX";
+
+  const formaDetectada = nota.forma_pagamento_detectada || "17 - PIX";
+
+  const opcaoExiste = [...pagamento.options].some(opt => opt.value === formaDetectada);
+
+  pagamento.value = opcaoExiste ? formaDetectada : "17 - PIX";
 
   renderizarItensConfirmacaoNfce(nota.itens || []);
   atualizarParcelamentoNfce();
@@ -1208,20 +1374,41 @@ function renderizarItensConfirmacaoNfce(itens) {
 
   lista.innerHTML = "";
 
-  itens.forEach(item => {
+  itens.forEach((item, index) => {
     const div = document.createElement("div");
     div.className = "item-row";
 
     div.innerHTML = `
-      <input value="${item.produto || ""}" readonly>
-      <input value="${moedaBR(item.valor_total || 0)}" readonly>
-      <select disabled>
-        <option>${item.categoria || "Outros"}</option>
+      <input class="preview-produto" value="${item.produto || ""}" readonly>
+
+      <div class="preview-linha-2">
+        <input class="preview-qtd" value="${item.quantidade || 1} ${item.unidade || "UN"}" readonly>
+        <input class="preview-valor" value="${moedaBR(item.valor_total || 0)}" readonly>
+      </div>
+
+      <select class="preview-categoria" onchange="atualizarCategoriaPreview(${index}, this.value)">
+        <option value="Alimentação" ${item.categoria === "Alimentação" ? "selected" : ""}>Alimentação</option>
+        <option value="Casa" ${item.categoria === "Casa" ? "selected" : ""}>Casa</option>
+        <option value="Transporte" ${item.categoria === "Transporte" ? "selected" : ""}>Transporte</option>
+        <option value="Saúde" ${item.categoria === "Saúde" ? "selected" : ""}>Saúde</option>
+        <option value="Limpeza" ${item.categoria === "Limpeza" ? "selected" : ""}>Limpeza</option>
+        <option value="Vestuário" ${item.categoria === "Vestuário" ? "selected" : ""}>Vestuário</option>
+        <option value="Educação" ${item.categoria === "Educação" ? "selected" : ""}>Educação</option>
+        <option value="Lazer" ${item.categoria === "Lazer" ? "selected" : ""}>Lazer</option>
+        <option value="Comunicação" ${item.categoria === "Comunicação" ? "selected" : ""}>Comunicação</option>
+        <option value="Detecção IA" ${item.categoria === "Detecção IA" ? "selected" : ""}>Detecção IA</option>
+        <option value="Outros" ${!item.categoria || item.categoria === "Outros" ? "selected" : ""}>Outros</option>
       </select>
     `;
 
     lista.appendChild(div);
   });
+}
+
+function atualizarCategoriaPreview(index, categoria) {
+  if (!nfcePreviewData || !nfcePreviewData.itens || !nfcePreviewData.itens[index]) return;
+
+  nfcePreviewData.itens[index].categoria = categoria;
 }
 
 function pagamentoNfceEhCredito() {
@@ -1292,20 +1479,33 @@ async function confirmarNfce() {
   }
 
   const payload = {
-    origem: "nfce_qrcode",
-    data_captura: nfcePreviewData.data_captura,
+    usuario_id: usuarioAtual?.uid || null,
+    usuario_nome: usuarioAtual?.displayName || null,
+    usuario_email: usuarioAtual?.email || null,
+
+    origem: nfcePreviewData.origem || "nfce_qrcode",
+    url_nfce: nfcePreviewData.url_nfce || null,
+    url_original: nfcePreviewData.url_original || null,
+    chave_nfce: nfcePreviewData.chave_nfce || null,
+
+    estabelecimento: nfcePreviewData.estabelecimento || "Estabelecimento não identificado",
     data_compra: String(nfcePreviewData.data_compra || "").slice(0, 10),
-    url_nfce: nfcePreviewData.url_nfce,
-    url_original: nfcePreviewData.url_original,
-    chave_nfce: nfcePreviewData.chave_nfce,
-    estabelecimento: nfcePreviewData.estabelecimento,
-    cnpj: nfcePreviewData.cnpj,
-    valor_total: nfcePreviewData.valor_total,
+    valor_total: Number(nfcePreviewData.valor_total || 0),
+
     forma_pagamento: formaPagamento,
     parcelas: parcelas,
     primeira_parcela: primeiraParcela,
+
     quantidade_itens: nfcePreviewData.itens.length,
-    itens: nfcePreviewData.itens
+    itens: nfcePreviewData.itens.map(i => ({
+      produto: i.produto,
+      categoria: i.categoria || "Outros",
+      valor_total: Number(i.valor_total || 0),
+      quantidade: Number(i.quantidade || 1),
+      unidade: i.unidade || "UN",
+      codigo: i.codigo || null,
+      ean: i.ean || null
+    }))
   };
 
   resetarTelaProcessamento();
@@ -1393,6 +1593,9 @@ async function salvarDespesaManual() {
   const totalManual = itensValidos.reduce((acc, item) => acc + item.valor, 0);
 
   const payload = {
+    usuario_id: usuarioAtual?.uid || null,
+    usuario_nome: usuarioAtual?.displayName || null,
+    usuario_email: usuarioAtual?.email || null,
     origem: "manual",
     estabelecimento: estabelecimentoManual,
     data_compra: dataManual,
@@ -1557,8 +1760,6 @@ function limparFormularioManual() {
   calcularTotal();
 }
 
-carregarDashboard();
-carregarUltimasNotas();
 adicionarItem();
 atualizarParcelamentoCard();
 

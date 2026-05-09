@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta name="theme-color" content="#0b1226">
+  <meta name="theme-color" content="#020b2d">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Fiscal Flow</title>
@@ -412,7 +412,7 @@
   width: min(430px, 100%);
   height: 76px;
   padding: 8px 18px 10px;
-  display: grid;
+  display: none;
   grid-template-columns: 1fr 1fr 70px 1fr 1fr;
   align-items: center;
   background: rgba(3, 7, 18, .94);
@@ -483,7 +483,7 @@
 
     .expense-tabs {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(96,139,255,.18);
       border-radius: 18px;
@@ -914,9 +914,20 @@
     background: rgba(15,23,42,.55);
   }
 
-  .item-row input:first-child {
-    grid-column: 1 / -1;
-  }
+.item-row-line {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.item-row-line input {
+  grid-column: auto !important;
+}
+
+.item-category-select {
+  grid-column: 1 / -1;
+}
 
   .item-row input,
   .item-row select {
@@ -991,13 +1002,32 @@
   }
 
   .import-tabs {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
 
-  .import-tabs .expense-tab {
-    font-size: 13px;
-    padding: 12px 6px;
-  }
+.import-tabs .expense-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 14px;
+  padding: 8px 4px;
+  line-height: 1;
+}
+
+.import-tabs .expense-tab span {
+  display: block;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.import-tabs .expense-tab small {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
 
   .import-panel {
     background: linear-gradient(145deg, rgba(18,30,65,.92), rgba(6,13,31,.95));
@@ -1883,18 +1913,165 @@
 }
 
 
+.item-row-line {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
 
+.item-category-select {
+  grid-column: 1 / -1;
+}
 
+.preview-produto {
+  grid-column: 1 / -1 !important;
+}
 
+.preview-linha-2 {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
 
+.preview-linha-2 input {
+  grid-column: auto !important;
+  width: 100% !important;
+}
 
+.preview-categoria {
+  grid-column: 1 / -1 !important;
+}
 
+.item-row .manual-produto {
+  grid-column: 1 / -1;
+}
 
+.item-row .manual-categoria {
+  grid-column: 1 / 2;
+  grid-row: 2;
+}
 
+.item-row .manual-valor {
+  grid-column: 2 / 3;
+  grid-row: 2;
+}
 
+.login-hero {
+  min-height: calc(100vh - 118px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+}
 
+.login-logo {
+  width: 132px;
+  height: 132px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 28px rgba(59,130,246,.55));
+}
 
+.login-title {
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
 
+.login-title span {
+  color: #3b82f6;
+}
+
+.login-subtitle {
+  color: #b8c1d9;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.login-card {
+  width: 100%;
+  padding: 26px 20px;
+  border-radius: 28px;
+  border: 1px solid rgba(59,130,246,.55);
+  background: linear-gradient(145deg, rgba(12,22,49,.86), rgba(5,10,24,.94));
+  box-shadow: 0 0 34px rgba(59,130,246,.18);
+}
+
+.login-card h1 {
+  margin: 0 0 10px;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.login-card p {
+  margin: 0 0 24px;
+  color: #aeb8d2;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.login-google-btn,
+.login-email-btn {
+  width: 100%;
+  height: 58px;
+  border-radius: 18px;
+  font-size: 17px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.login-google-btn {
+  border: 1px solid rgba(96,165,250,.95);
+  background: linear-gradient(145deg, rgba(30,64,175,.95), rgba(8,18,45,.98));
+  color: white;
+  box-shadow: 0 0 24px rgba(59,130,246,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.google-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: white;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
+.login-divider {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 14px;
+  color: #94a3b8;
+  margin: 20px 0;
+}
+
+.login-divider span {
+  height: 1px;
+  background: rgba(148,163,184,.28);
+}
+
+.login-email-btn {
+  border: 1px solid rgba(59,130,246,.55);
+  background: rgba(15,23,42,.62);
+  color: white;
+}
+
+.login-security {
+  margin-top: 18px;
+  color: #aeb8d2;
+  font-size: 14px;
+}
 
 </style>
 
@@ -1903,15 +2080,53 @@
 <body>
   <div class="app">
 
-    <section id="homeScreen" class="screen active">
-      <div class="top dashboard-top">
+<section id="loginScreen" class="screen">
+  <div class="login-hero">
+        <img src="Logo.png" class="login-logo" alt="Fiscal Flow">
+
+        <div class="login-title">
+          Fiscal<span>Flow</span>
+        </div>
+
+        <div class="login-subtitle">
+          Controle suas despesas com NFC-e
+        </div>
+
+        <div class="login-card">
+          <h1>Bem-vindo!</h1>
+          <p>Faça login para acessar suas despesas, relatórios e muito mais.</p>
+
+          <button id="loginGoogleBtn" class="login-google-btn" type="button">
+            <span class="google-icon">G</span>
+            Entrar com Google
+          </button>
+
+          <div class="login-divider">
+            <span></span>
+            ou
+            <span></span>
+          </div>
+
+          <button class="login-email-btn" type="button">
+            ✉️ Entrar com e-mail
+          </button>
+        </div>
+
+        <div class="login-security">
+          🔒 Seus dados estão protegidos e seguros
+        </div>
+      </div>
+    </section>
+
+<section id="homeScreen" class="screen active">
+  <div class="top dashboard-top">
         <div class="dashboard-title-wrap">
           <button class="icon-btn menu-btn" type="button">☰</button>
           <div class="dashboard-page-title">Despesas</div>
         </div>
 
       <div class="dashboard-top-actions">
-        <button class="icon-btn" type="button">
+        <button class="icon-btn" id="logoutBtn" type="button">
           <img src="Engrenagem.png" class="gear-icon" alt="Configurações">
         </button>
       </div>
@@ -2034,10 +2249,30 @@
       </div>
 
       <div class="expense-tabs import-tabs">
-        <button class="expense-tab active" id="tabScan" type="button">⌗ Scan</button>
-        <button class="expense-tab" id="tabOCR" type="button">▣ OCR</button>
-        <button class="expense-tab" id="tabXML" type="button">▤ XML</button>
-        <button class="expense-tab" id="tabManual" type="button">✎ Manual</button>
+        <button class="expense-tab active" id="tabScan" type="button">
+          <span>⌗</span>
+          <small>Scan</small>
+        </button>
+
+        <button class="expense-tab" id="tabOCR" type="button">
+          <span>▣</span>
+          <small>OCR</small>
+        </button>
+
+        <button class="expense-tab" id="tabXML" type="button">
+          <span>▤</span>
+          <small>XML</small>
+        </button>
+
+        <button class="expense-tab" id="tabVoz" type="button">
+          <span>🎙</span>
+          <small>Voz</small>
+        </button>
+
+        <button class="expense-tab" id="tabManual" type="button">
+          <span>✎</span>
+          <small>Manual</small>
+        </button>
       </div>
 
       <div id="scanMode">
@@ -2143,7 +2378,26 @@
 
 
 
+  <div id="vozMode" class="manual-mode hidden">
+    <div class="import-panel">
+      <div class="import-title">Registrar por voz</div>
+      <div class="import-sub">
+        Fale algo como: “Gastei 45 reais no posto no débito”.
+      </div>
 
+      <button class="upload-btn" id="btnIniciarVoz" type="button">
+        🎙️ Tocar e falar
+      </button>
+
+      <div class="parcelamento-resumo" id="vozTexto">
+        Aguardando fala...
+      </div>
+
+      <button class="manual-save-btn" id="btnUsarTextoVoz" type="button">
+        Usar este texto
+      </button>
+    </div>
+  </div>
 
   <div id="manualMode" class="manual-mode hidden">
 
@@ -2151,8 +2405,8 @@
 <label>Forma de pagamento</label>
   <select id="manualPagamento">
     <option value="01 - Dinheiro">Dinheiro</option>
-    <option value="02 - Cartão de Débito">Cartão de Débito</option>
     <option value="03 - Cartão de Crédito">Cartão de Crédito</option>
+    <option value="04 - Cartão de Débito">Cartão de Débito</option>
     <option value="17 - PIX">Pix</option>
     <option value="18 - Transferência (TED)">Transferência (TED)</option>
     <option value="99 - Criptomoeda">Criptomoeda</option>
@@ -2261,8 +2515,8 @@
     <label>Forma de pagamento</label>
     <select id="nfcePagamento">
       <option value="01 - Dinheiro">Dinheiro</option>
-      <option value="02 - Cartão de Débito">Cartão de Débito</option>
       <option value="03 - Cartão de Crédito">Cartão de Crédito</option>
+      <option value="04 - Cartão de Débito">Cartão de Débito</option>
       <option value="17 - PIX">Pix</option>
     </select>
 
@@ -2349,7 +2603,7 @@
 
   </div>
 
-<nav class="bottom-nav">
+<nav class="bottom-nav" id="bottomNav">
   <div class="nav-item active" onclick="showScreen(homeScreen); stopCamera();">
     <span class="nav-icon">
       <svg viewBox="0 0 24 24">
@@ -2397,7 +2651,19 @@
     Mais
   </div>
 </nav>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 
-  <script src="app.js?v=3333"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDI-hUgRA6uoE5BgHrqJlZ-TI7LAUQU978",
+    authDomain: "fiscalflow-be7b3.firebaseapp.com",
+    projectId: "fiscalflow-be7b3",
+    appId: "1:400166177729:web:411369dc498dfbf9833d40"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+</script>
+  <script src="app.js?v=3630"></script>
 </body>
 </html>
